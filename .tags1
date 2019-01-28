@@ -4,3 +4,11 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+hook	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function hook(comp) {$/;"	function	line:8
+go	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function go(scene) {$/;"	function	line:13
+text	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function text(strings, ...keys) {$/;"	function	line:17
+pink	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function pink(strings, ...keys) {$/;"	function	line:41
+print	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function print(string) {$/;"	function	line:45
+choose	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function choose(mapping) {$/;"	function	line:49
+change_mana	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export function change_mana() {$/;"	function	line:55
+execute	C:\Users\Lucky\Dropbox\projects\alpha\src\core\game.js	/^export async function execute(key) {$/;"	function	line:58

@@ -1,13 +1,13 @@
-.App {
+.root {
   text-align: center;
 }
 
-.App-logo {
+.logo {
   animation: App-logo-spin infinite 20s linear;
   height: 10vmin;
 }
 
-.App-header {
+.header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -17,28 +17,38 @@
   color: white;
 }
 
-.App-topbar {
+.topbar {
   display: flex;
   align-items: center;
   border: 1px solid black;
 }
 
-.App-link {
+.link {
   color: #61dafb;
 }
 
-.App-gamewindow {
+.gameWindow {
   flex-grow: 1;
   resize: none;
   padding: 20px;
   overflow-y: scroll;
 }
 
-.App-input {
-  height: 10vh;
-  font-size: 24px;
-  font-family: monospace;
-  padding-left: 20px;
+.inputButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+Button {
+  height: 100%;
+  width: 100%;
 }
 
 @keyframes App-logo-spin {
