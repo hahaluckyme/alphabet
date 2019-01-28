@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://hahaluckyme.github.io/alpha",
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "babel-plugin-auto-import": "^1.0.0",
     "react": "^16.7.0",
     "react-bootstrap": "^0.32.4",
@@ -16,7 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "git push && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -28,6 +29,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "flow-bin": "^0.91.0",
     "gh-pages": "^2.0.1"
   }
 }

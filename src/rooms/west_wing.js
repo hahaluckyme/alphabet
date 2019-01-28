@@ -1,5 +1,5 @@
 import {print, choose, change_mana, go} from '../core/game.js';
-import {text, pink, blue} from '../core/game.js';
+import {text, pink, blue} from '../core/style.js';
 import {aphex_church} from './aphex_church.js';
 
 export function west_wing() {

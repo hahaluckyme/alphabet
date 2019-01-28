@@ -1,5 +1,5 @@
 import {print, choose, change_mana, go} from '../core/game.js';
-import {text, pink, blue} from '../core/game.js';
+import {text, pink, blue} from '../core/style.js';
 import {aphex_church} from '../rooms/aphex_church.js';
 
 export function aphex_intro() {
@@ -30,7 +30,7 @@ export function aphex_intro() {
       label: 'Yes',
       action: function() {
         print(text`
-          ${pink`Good. Now be on your way with some mana.`}
+          ${pink`"Good. Now be on your way with some mana."`}
 
           +100 mana!
         `);
@@ -43,11 +43,11 @@ export function aphex_intro() {
       label: 'No',
       action: function() {
         print(text`
-          ${pink`You little shit, I did all this work for you.`}
+          ${pink`"You little shit, I did all this work for you."`}
 
           She casts a Geas spell on you and you feel yourself forcefully inclined to help.
 
-          ${pink`Fuck, now I don't have enough mana to give you anything. Go out there and fix me!`}
+          ${pink`"Fuck, now I don't have enough mana to give you anything. Go out there and fix me!"`}
         `);
         go(aphex_church);
       },

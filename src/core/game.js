@@ -1,4 +1,3 @@
-import '../prototypes.js';
 import {aphex_intro} from '../scenes/aphex_intro.js';
 
 let component = null;
@@ -11,35 +10,8 @@ export function hook(comp) {
 }
 
 export function go(scene) {
+  print();
   cur_scene = scene();
-}
-
-export function text(strings, ...keys) {
-  let output = '';
-  for (let i = 0; i < strings.length; i++) {
-    let section = strings[i]
-      .replaceAll(/\n +/, '\n') // remove leading whitespace in paragraphs
-      .replaceAll(/\n\n+/, '\n\n'); // 2 newlines at max
-    if (i === 0) {
-      section = section.trimLeft();
-    }
-
-    if (i === strings.length - 1) {
-      section = section.trimRight();
-    }
-
-    output += section;
-
-    if (i < keys.length) {
-      output += keys[i];
-    }
-  }
-
-  return output;
-}
-
-export function pink(strings, ...keys) {
-  return text(strings, ...keys);
 }
 
 export function print(string) {
@@ -49,7 +21,6 @@ export function print(string) {
 export function choose(mapping) {
   component.setChoices(mapping);
   cur_choice = mapping;
-  print();
 }
 
 export function change_mana() {

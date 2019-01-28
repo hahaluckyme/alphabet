@@ -8,16 +8,21 @@ class App extends React.Component {
   state = {
     history: [],
     choices: {},
-    key_down: null,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     // need to hook this component into the template strings in each scene
-    game.hook(this);
-    document.addEventListener('keydown', this.onKeyDown.bind(this))
+    await game.hook(this);
+    document.addEventListener('keydown', this.onKeyDown.bind(this));
+    document.title = 'Alpha';
+    this.historyRef.scrollTop = 0;
   }
 
   async print(line) {
+    line = line || '';
+    if (typeof line === 'string' && (line.length === 0 || line[line.length-1] === '\n')) {
+      line += ' '; // trailing newlines are not rendered correctly. wtf?
+    }
     await this.setState(prevState => ({
       history: prevState.history.concat(line),
     }));
@@ -30,13 +35,6 @@ class App extends React.Component {
     }));
   }
 
-  async onKeyCharDown(key_char) {
-    await this.setState(() => ({
-      key_char: key_char,
-    }));
-    game.execute(key_char);
-  }
-
   async onKeyDown(event) {
     if (![
       '1', '2', '3', '4', '5',
@@ -45,14 +43,14 @@ class App extends React.Component {
     ].includes(event.key)) {
       return;
     }
-    await this.onKeyCharDown(event.key);
+    game.execute(event.key);
   }
 
   _renderButton(key) {
     const {choices} = this.state;
     return (
       <button
-        onClick={() => this.onKeyCharDown(key)}
+        onClick={() => game.execute(key)}
         disabled={choices[key] == null}
         style={{
           'opacity': choices[key] != null ? '1' : '0.5',
@@ -66,41 +64,43 @@ class App extends React.Component {
   render() {
     return (
       <div className="root">
-        <header className="header">
-          <div className="topbar">
-            <img src={logo} className="logo" alt="logo" />
-            <p>
-              Alpha
-            </p>
+        <div className="topbar">
+          <img src={logo} className="logo" alt="logo" />
+          <div>
+            Alpha
           </div>
-          <textarea
-            ref={ref => {this.historyRef = ref;}}
-            className="gameWindow"
-            value={this.state.history.join('\n')} />
-          <div className="inputButtons">
-            <div className="inputRow">
-              {this._renderButton('1')}
-              {this._renderButton('2')}
-              {this._renderButton('3')}
-              {this._renderButton('4')}
-              {this._renderButton('5')}
-            </div>
-            <div className="inputRow">
-              {this._renderButton('q')}
-              {this._renderButton('w')}
-              {this._renderButton('e')}
-              {this._renderButton('r')}
-              {this._renderButton('t')}
-            </div>
-            <div className="inputRow">
-              {this._renderButton('a')}
-              {this._renderButton('s')}
-              {this._renderButton('d')}
-              {this._renderButton('f')}
-              {this._renderButton('g')}
-            </div>
+        </div>
+        <div
+          className="gameWindow"
+          ref={ref => {this.historyRef = ref;}}
+        >
+          <div className="gameWindowContent">
+            {this.state.history}
           </div>
-        </header>
+        </div>
+        <div className="inputButtons">
+          <div className="inputRow">
+            {this._renderButton('1')}
+            {this._renderButton('2')}
+            {this._renderButton('3')}
+            {this._renderButton('4')}
+            {this._renderButton('5')}
+          </div>
+          <div className="inputRow">
+            {this._renderButton('q')}
+            {this._renderButton('w')}
+            {this._renderButton('e')}
+            {this._renderButton('r')}
+            {this._renderButton('t')}
+          </div>
+          <div className="inputRow">
+            {this._renderButton('a')}
+            {this._renderButton('s')}
+            {this._renderButton('d')}
+            {this._renderButton('f')}
+            {this._renderButton('g')}
+          </div>
+        </div>
       </div>
     );
   }
