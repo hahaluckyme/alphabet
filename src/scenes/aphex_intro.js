@@ -1,11 +1,12 @@
-import {print, choose, go} from '../core/game.js';
 import React from 'react';
-import {aphex_church} from '../rooms/aphex_church.js';
+import {Pink} from 'colors';
+import * as game from 'game';
+import {aphex_church} from 'aphex_church';
 
-export let willing_to_help;
+export let willingness;
 
 export function aphex_intro() {
-  print(<>
+  game.print(<>
     You try to open your eyes but see only darkness. You instinctively blink a few times, but you can't feel your eyelids. But you know there to be a silhouette in front of you--its very existence exuding power into your soul.
 
     It speaks a command that you cannot hear and your body lurches forward in response, pushing you through a ethereal fabric, tearing a hole for you to enter. Passing through, your body feels heavy and you fall to your knees, gasping for air as your lungs fill with air for what seems like the first time. Your rough entry knocks over a candle on the floor.
@@ -14,84 +15,101 @@ export function aphex_intro() {
 
     Dazed, you stammer at her, asking what's happening, and where you are.
 
-    <pink>"I have summoned you from your plane and I require your assistance. I am Aphex, the goddess of romance.</pink>
+    <Pink>"I have summoned you from your plane and I require your assistance. I am Aphex, the goddess of romance.</Pink>
 
     You pinch yourself and feel pain.
 
-    <pink>"This world is crumbling. Mana was innate in all creatures, and humanoids were no exception. But a catastrophe years ago wracked the magical balance, causing an imbalance to occur. Now, women have become unable to regenerate mana.</pink>
+    <Pink>"This world is crumbling. Mana was innate in all creatures, and humanoids were no exception. But a catastrophe years ago wracked the magical balance, causing an imbalance to occur. Now, women have become unable to regenerate mana.</Pink>
 
-    <pink>"In some parts of the world, they were able to overcome this challenge with their technology. But in most, it has caused a destruction in status quo, the new culture reflecting the clear power imbalance. And with it, my power wanes, and so too my influence, causing a vicious cycle that soon I will be completely unable to stop.</pink>
+    <Pink>"In some parts of the world, they were able to overcome this challenge with their technology. In most, it has caused a destruction in status quo, the new culture reflecting the clear power imbalance. And with it, my power wanes, and so too my influence, causing a vicious cycle that soon I will be completely unable to stop.</Pink>
 
-    <pink>"But we have time. If you are able to aid me, we can change course and I can guide civilization back from the brink of collapse.</pink>
+    <Pink>"But we have time. If you are able to aid me, we can change course and I can guide civilization back from the brink of collapse.</Pink>
 
     She lowers herself to kneel on one knee, pointing her head towards your feet.
 
-    <pink>"I beg of you, will you accept my quest and restore order to this world?</pink>
+    <Pink>"I beg of you, will you accept my quest and restore order to this world?</Pink>
   </>);
 
-  choose({
-    '1': {
-      label: `Yes (truth)`,
-      action: function() {
-        print(<>
-          You agree that you will do it. You're not sure what you need to do or if you can succeed, but you will try your best to help her.
+  // setting the choices by using a constant label map
+  game.choose({
+    'Yes (truth)': function() {
+      game.print(<>
+        You agree that you will do it. You're not sure what you need to do or if you can succeed, but you will try your best to help her.
+      </>);
 
-          <pink>"I thank you for your service. And the world does not know it yet, but it thanks you, too."</pink>
-
-          She stands up and puts her hand on your shoulder.
-
-          <pink>"I will bestow your body with the mana I can sacrifice. However, your body has no ability to regenerate it.</pink>
-
-          You can feel a rush of energy enter your body, awakening nerves you never knew you had.
-        </>);
-
-        willing_to_help = true;
-        // set_mana(1000);
-        go(aphex_church);
-      },
+      willingness = 'yes';
+      yes();
+      game.go(aphex_church);
     },
-    '2': {
-      label: `Yes (tentative)`,
-      action: function() {
-        print(<>
-          You agree to help her out, but you're pretty sure you'll ditch the moment it gets dangerous for you.
+    'Yes (tentative)': function() {
+      game.print(<>
+        You agree to help her out, but you keep silent that you're pretty sure you'll ditch the moment it gets dangerous for you.
 
-          She lowers her body, kneeling on one knee with her head down.
+        She lowers her body, kneeling on one knee with her head down.
 
-          <pink>"Thank you.</pink>
+        <Pink>'Thank you.</Pink>
+      </>);
 
-          +100 mana!
-        </>);
-
-        go(aphex_church);
-      },
+      willingness = 'tentative';
+      yes();
+      game.go(aphex_church);
     },
-    '3': {
-      label: `No`,
-      action: function() {
-        print(<>
-          <pink>"You little shit, I did all this work for you.</pink>
+    'No': function() {
+      game.print(<>
+        You say that she's definitely looking for another person--there's no way that someone like you would do this, let alone be able to! You're just a regular person.
 
-          She casts a Geas spell on you and you feel yourself forcefully inclined to help.
+        Her expression tightens and you feel like she is not interested in sending you home.
 
-          <pink>"Fuck, now I don't have enough mana to give you anything. Go out there and fix me!</pink>
-        </>);
-        go(aphex_church);
-      },
+        <Pink>"I don't think you realize how difficult it was for me to summon you. Perhaps you would like to change your mind?"</Pink>
+
+        She has definitely cast a spell on you, but you don't know what it is.
+      </>);
+
+      willingness = 'no';
+
+      // setting the choices by array
+      game.choose([
+        {
+          label: `Yes`,
+          action: function() {
+            game.print(<>
+              You can't help but to say yes to her.
+            </>);
+
+            game.go(aphex_church);
+          },
+        },
+        {
+          label: `No`,
+          disabled: true,
+        },
+      ]);
     },
   });
-};
+}
+
+function yes() {
+  game.print(<>
+    <Pink>"I thank you for your service. And the world does not know it yet, but it thanks you, too."</Pink>
+
+    She stands up and puts her hand on your shoulder.
+
+    <Pink>"I will bestow your body with the mana I can sacrifice. However, your body has no ability to regenerate it.</Pink>
+
+    You can feel a rush of energy enter your body, awakening nerves you never knew you had.
+  </>);
+}
 
 function dont_know() {
-  print(<>
+  game.print(<>
     You tell her... that you're not sure. You don't have
 
-    <pink>"Good. Now be on your way with some mana.</pink>
+    <Pink>"Good. Now be on your way with some mana.</Pink>
 
     +100 mana!
   </>);
 
-  choose({
+  game.choose({
     '1': {
       label: `Yes (truth)`,
       action: function() {

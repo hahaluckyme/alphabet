@@ -1,21 +1,21 @@
-import {print, choose, change_mana, go} from '../core/game.js';
-import {text, pink, blue} from '../core/style.js';
-import {aphex_church} from './aphex_church.js';
+import React from 'react';
+import * as game from 'game';
+import {aphex_church} from 'aphex_church';
 
 export function west_wing() {
-  print(text`
+  game.print(<>
     A nondescript west wing.
-  `);
+  </>);
 
-  choose({
+  game.choose({
     'd': {
       label: 'Church Hall',
       action: function() {
-        print(text`
+        game.print(<>
           You go back to the main church area.
-        `);
+        </>);
 
-        go(aphex_church);
+        game.go(aphex_church);
       },
     },
   });

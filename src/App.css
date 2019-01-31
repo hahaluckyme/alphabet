@@ -3,6 +3,7 @@ html {
 }
 
 .root {
+  position: absolute;
   background-color: #282c34;
   height: 100vh;
   width: 100vw;
@@ -45,8 +46,12 @@ p {
   margin: 0px;
 }
 
-pink {
+.pink {
   color: pink;
+}
+
+b {
+  margin-bottom: 20px;
 }
 
 .gameWindowContent > * {
@@ -65,7 +70,11 @@ pink {
   align-content: stretch;
 }
 
-Button {
+.inputRow > div {
+  width: 100%;
+}
+
+button {
   width: 100%;
 }
 

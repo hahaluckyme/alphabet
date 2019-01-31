@@ -1,31 +1,31 @@
-import {print, choose, change_mana, go} from '../core/game.js';
-import {text, pink, blue} from '../core/style.js';
-import {north_wing} from './north_wing.js';
-import {west_wing} from './west_wing.js';
+import React from 'react';
+import * as game from 'game';
+import {north_wing} from 'north_wing';
+import {west_wing} from 'west_wing';
 
 let has_called_aphex = false;
 
 function call_aphex() {
   if (!has_called_aphex) {
-    print(text`
+    game.print(<>
       You call Aphex but there is no reply.
-    `);
+    </>);
     has_called_aphex = true;
   } else {
-    print(text`
+    game.print(<>
       You already tried to call Aphex but you do it again. There is no reply.
-    `);
+    </>);
   }
 
-  go(aphex_church);
+  game.go(aphex_church);
 }
 
 export function aphex_church() {
-  print(text`
+  game.print(<>
     The church is empty. The building looks like nobody has been in here for decades. You are in the main area of the church with the pews laying empty.
-  `);
+  </>);
 
-  choose({
+  game.choose({
     '1': {
       label: 'Call Aphex',
       action: call_aphex,
@@ -33,19 +33,19 @@ export function aphex_church() {
     'w': {
       label: 'North Wing',
       action: function() {
-        print(text`
+        game.print(<>
           You walk to the north wing.
-        `);
-        go(north_wing);
+        </>);
+        game.go(north_wing);
       },
     },
     'a': {
       label: 'West Wing',
       action: function() {
-        print(text`
+        game.print(<>
           You walk to the west wing.
-        `);
-        go(west_wing);
+        </>);
+        game.go(west_wing);
       },
     },
   });

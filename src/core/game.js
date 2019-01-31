@@ -1,5 +1,12 @@
-import {aphex_intro} from '../scenes/aphex_intro.js';
+import 'prototypes';
 import React from 'react';
+import {aphex_intro} from 'aphex_intro';
+
+export const ALLOWED_KEYS = [
+  '1', '2', '3', '4', '5',
+  'q', 'w', 'e', 'r', 't',
+  'a', 's', 'd', 'f', 'g',
+];
 
 let component = null;
 let cur_scene = null;
@@ -20,21 +27,42 @@ export function print(fragment) {
 }
 
 export function yes_or_no(yes_action, no_action) {
-  choose({
-    '1': {
+  choose([
+    {
       label: 'Yes',
       action: yes_action,
     },
-    '2': {
+    {
       label: 'No',
       action: no_action,
     },
-  });
+  ]);
 }
 
 export function choose(mapping) {
-  component.setChoices(mapping);
-  cur_choice = mapping;
+  if (Object.keys(mapping).every(key => ALLOWED_KEYS.includes(key))) {
+    // dict, but it is a key mapping
+    component.setChoices(mapping);
+    cur_choice = mapping;
+  } else if (Array.isArray(mapping)) {
+    // is an array--default to 1,2,3,4,5
+    mapping = mapping.reduce(
+      (acc, choice, i) => {
+        acc[i+1] = choice;
+        return acc;
+      },
+      {},
+    );
+    choose(mapping);
+  } else {
+    // dict, but it is a label mapping
+    mapping = Object.keys(mapping).map(key => ({
+      label: key,
+      action: mapping[key],
+    }));
+    console.log(mapping);
+    choose(mapping);
+  }
 }
 
 export function change_mana() {
@@ -42,11 +70,12 @@ export function change_mana() {
 
 export async function execute(key) {
   if (key in cur_choice) {
-    print(
-      <div>
-        <b>> {cur_choice[key].label}</b>
-      </div>
-    );
-    cur_choice[key].action();
+    const isButtonDisabled = cur_choice[key].disabled === true
+      || typeof cur_choice[key].disabled === 'string';
+
+    if (!isButtonDisabled) {
+      print(<b>> {cur_choice[key].label}</b>);
+      cur_choice[key].action();
+    }
   }
 }

@@ -1,8 +1,10 @@
-import './prototypes.js';
+import 'prototypes';
 import React from 'react';
-import logo from './logo.svg';
-import * as game from './core/game.js';
-import './App.css';
+import * as ReactIs from 'react-is';
+import * as game from 'game';
+
+import logo from 'logo.svg';
+import 'App.css';
 
 class App extends React.Component {
   state = {
@@ -18,20 +20,27 @@ class App extends React.Component {
     this.historyRef.scrollTop = 0;
   }
 
-  async print(fragment) {
-    fragment = fragment || <div />;
-    if (fragment.props && fragment.props.children) {
-      // map all raw text nodes as paragraphs
-      fragment = React.Children.map(fragment.props.children, elem => {
-        if (typeof elem === 'string') {
-          return <p>{elem}</p>;
-        }
-
-        return elem;
-      });
+  sanitizeNode(node) {
+    if (node == null) {
+      return <div />;
     }
+
+    if (ReactIs.isFragment(node)) {
+      // map all raw text nodes as paragraphs
+      return React.Children.map(
+        node.props.children,
+        elem => this.sanitizeNode(elem),
+      );
+    } else {
+      return <div>{node}</div>;
+    }
+  }
+
+  async print(node) {
+    node = this.sanitizeNode(node);
+
     await this.setState(prevState => ({
-      history: <>{prevState.history}{fragment}</>,
+      history: <>{prevState.history}{node}</>,
     }));
     this.historyRef.scrollTop = this.historyRef.scrollHeight;
   }
@@ -43,27 +52,53 @@ class App extends React.Component {
   }
 
   async onKeyDown(event) {
-    if (![
-      '1', '2', '3', '4', '5',
-      'q', 'w', 'e', 'r', 't',
-      'a', 's', 'd', 'f', 'g',
-    ].includes(event.key)) {
+    if (!game.ALLOWED_KEYS.includes(event.key)) {
       return;
     }
+
     game.execute(event.key);
   }
 
   _renderButton(key) {
     const {choices} = this.state;
+
+    if (choices[key] == null) {
+      return (
+        <button
+          diabled={true}
+          style={{
+            opacity: 0.3,
+          }}
+        >
+          {key}
+        </button>
+      );
+    }
+
+    const isButtonDisabled = choices[key].disabled === true
+      || typeof choices[key].disabled === 'string';
+
+    if (isButtonDisabled) {
+      return (
+        <button
+          disabled={isButtonDisabled}
+          style={{
+            opacity: 0.6,
+          }}
+        >
+          {choices[key].label}
+        </button>
+      );
+    }
+
     return (
       <button
         onClick={() => game.execute(key)}
-        disabled={choices[key] == null}
         style={{
-          'opacity': choices[key] != null ? '1' : '0.5',
+          opacity: 1,
         }}
       >
-        {choices[key] ? choices[key].label : key}
+        {choices[key].label}
       </button>
     );
   }
