@@ -41,6 +41,14 @@ export function pink(strings) {
   );
 }
 
+export function bold(strings) {
+  return (
+    <div className="bold">
+      {strings}
+    </div>
+  );
+}
+
 export function blue(strings, ...keys) {
   return text(strings, ...keys);
 }

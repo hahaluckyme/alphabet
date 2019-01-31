@@ -9,13 +9,13 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
 .topbar {
   display: flex;
   align-items: center;
+  font-size: calc(10px + 2vmin);
   border: 1px solid black;
 }
 
@@ -41,8 +41,16 @@ html {
   margin: 20px;
 }
 
-.pink {
+p {
+  margin: 0px;
+}
+
+pink {
   color: pink;
+}
+
+.gameWindowContent > * {
+  margin-bottom: 20px;
 }
 
 .inputButtons {

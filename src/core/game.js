@@ -1,4 +1,5 @@
 import {aphex_intro} from '../scenes/aphex_intro.js';
+import React from 'react';
 
 let component = null;
 let cur_scene = null;
@@ -14,8 +15,21 @@ export function go(scene) {
   cur_scene = scene();
 }
 
-export function print(string) {
-  component.print(string);
+export function print(fragment) {
+  component.print(fragment);
+}
+
+export function yes_or_no(yes_action, no_action) {
+  choose({
+    '1': {
+      label: 'Yes',
+      action: yes_action,
+    },
+    '2': {
+      label: 'No',
+      action: no_action,
+    },
+  });
 }
 
 export function choose(mapping) {
@@ -28,7 +42,11 @@ export function change_mana() {
 
 export async function execute(key) {
   if (key in cur_choice) {
-    print('\n---\n');
+    print(
+      <div>
+        <b>> {cur_choice[key].label}</b>
+      </div>
+    );
     cur_choice[key].action();
   }
 }

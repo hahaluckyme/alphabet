@@ -6,7 +6,7 @@ import './App.css';
 
 class App extends React.Component {
   state = {
-    history: [],
+    history: <></>,
     choices: {},
   };
 
@@ -18,13 +18,20 @@ class App extends React.Component {
     this.historyRef.scrollTop = 0;
   }
 
-  async print(line) {
-    line = line || '';
-    if (typeof line === 'string' && (line.length === 0 || line[line.length-1] === '\n')) {
-      line += ' '; // trailing newlines are not rendered correctly. wtf?
+  async print(fragment) {
+    fragment = fragment || <div />;
+    if (fragment.props && fragment.props.children) {
+      // map all raw text nodes as paragraphs
+      fragment = React.Children.map(fragment.props.children, elem => {
+        if (typeof elem === 'string') {
+          return <p>{elem}</p>;
+        }
+
+        return elem;
+      });
     }
     await this.setState(prevState => ({
-      history: prevState.history.concat(line),
+      history: <>{prevState.history}{fragment}</>,
     }));
     this.historyRef.scrollTop = this.historyRef.scrollHeight;
   }
