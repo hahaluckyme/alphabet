@@ -1,6 +1,6 @@
 import 'prototypes';
 import React from 'react';
-import {aphex_intro} from 'aphex_intro';
+import scenes from 'scenes';
 
 export const ALLOWED_KEYS = [
   '1', '2', '3', '4', '5',
@@ -14,16 +14,38 @@ let cur_choice = null;
 
 export function hook(comp) {
   component = comp;
-  go(aphex_intro);
+  load();
 }
 
 export function go(scene) {
-  print();
-  cur_scene = scene();
+  if (cur_scene != null) {
+    component.print(<span>{'\n'}</span>);
+  }
+  cur_scene = scene;
+  scenes[scene]();
+  save();
+}
+
+export function load() {
+  try {
+    throw new Error();
+    const save = JSON.parse(localStorage.getItem('save'));
+    go(save.cur_scene);
+  } catch (e) {
+    go('aphex_intro');
+  }
+}
+
+export function save() {
+  const save = {
+    cur_scene,
+  };
+  localStorage.setItem('save', JSON.stringify(save));
 }
 
 export function print(fragment) {
   component.print(fragment);
+  component.print('\n');
 }
 
 export function yes_or_no(yes_action, no_action) {
@@ -60,7 +82,6 @@ export function choose(mapping) {
       label: key,
       action: mapping[key],
     }));
-    console.log(mapping);
     choose(mapping);
   }
 }
@@ -74,7 +95,7 @@ export async function execute(key) {
       || typeof cur_choice[key].disabled === 'string';
 
     if (!isButtonDisabled) {
-      print(<b>> {cur_choice[key].label}</b>);
+      print(<span>{'\n'}<b>> {cur_choice[key].label}</b>{'\n'}</span>);
       cur_choice[key].action();
     }
   }

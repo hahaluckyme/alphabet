@@ -6,9 +6,11 @@ import * as game from 'game';
 import logo from 'logo.svg';
 import 'App.css';
 
+import * as scenes from 'scenes';
+
 class App extends React.Component {
   state = {
-    history: <></>,
+    history: [],
     choices: {},
   };
 
@@ -22,7 +24,7 @@ class App extends React.Component {
 
   sanitizeNode(node) {
     if (node == null) {
-      return <div />;
+      return null;
     }
 
     if (ReactIs.isFragment(node)) {
@@ -32,16 +34,19 @@ class App extends React.Component {
         elem => this.sanitizeNode(elem),
       );
     } else {
-      return <div>{node}</div>;
+      return node;
     }
   }
 
   async print(node) {
     node = this.sanitizeNode(node);
 
-    await this.setState(prevState => ({
-      history: <>{prevState.history}{node}</>,
-    }));
+    await this.setState(prevState => {
+      prevState.history.push(node);
+      return {
+        history: prevState.history,
+      };
+    });
     this.historyRef.scrollTop = this.historyRef.scrollHeight;
   }
 
@@ -65,7 +70,7 @@ class App extends React.Component {
     if (choices[key] == null) {
       return (
         <button
-          diabled={true}
+          disabled={true}
           style={{
             opacity: 0.3,
           }}

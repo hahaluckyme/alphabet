@@ -1,13 +1,17 @@
-require('./prototypes.js');
+require('prototypes');
 
-function requireAll(r) {
-  console.log(r.keys());
-  return r.keys().reduce((acc, e) => {
+function requireAll(scenes, r) {
+  r.keys().forEach(e => {
     const module_name = e.stripLeft('./').stripRight('.js');
-    acc[module_name] = r(e);
-    return acc;
-  }, {});
+    const module = r(e);
+    Object.keys(module).forEach(property_name => {
+      if (typeof module[property_name] === 'function') {
+        scenes[property_name] = module[property_name];
+      }
+    });
+  });
 }
 
-const rooms = requireAll(require.context('./scenes/', true, /\.js$/));
-module.exports = rooms;
+let scenes = {};
+module.exports = scenes;
+requireAll(scenes, require.context('./scenes/', true, /\.js$/));

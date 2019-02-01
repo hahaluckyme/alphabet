@@ -42,20 +42,23 @@ html {
   margin: 20px;
 }
 
-p {
-  margin: 0px;
+@-webkit-keyframes fade {
+   0% {background: #666600;}
+   100% {background: none;}
+}
+
+@keyframes fade {
+   0% {background: #666600;}
+   100% {background: none;}
+}
+
+.gameWindowContent > * {
+   -webkit-animation: fade 1s ease-in 1;
+   animation: fade 1s ease-in 1;
 }
 
 .pink {
   color: pink;
-}
-
-b {
-  margin-bottom: 20px;
-}
-
-.gameWindowContent > * {
-  margin-bottom: 20px;
 }
 
 .inputButtons {
