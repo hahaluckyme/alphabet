@@ -17,7 +17,7 @@ export function hook(comp) {
   load();
 }
 
-export function go(scene) {
+export function play(scene) {
   if (cur_scene != null) {
     component.print(<span>{'\n'}</span>);
   }
@@ -30,9 +30,9 @@ export function load() {
   try {
     throw new Error();
     const save = JSON.parse(localStorage.getItem('save'));
-    go(save.cur_scene);
+    play(save.cur_scene);
   } catch (e) {
-    go('aphex_intro');
+    play('aphex_intro');
   }
 }
 

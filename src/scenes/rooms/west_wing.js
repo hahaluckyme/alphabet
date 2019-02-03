@@ -1,4 +1,3 @@
-import React from 'react';
 import * as game from 'game';
 import * as style from 'style';
 
@@ -15,7 +14,7 @@ export function west_wing() {
           You go back to the main church area.
         `);
 
-        game.go('aphex_church');
+        game.play('aphex_church');
       },
     },
   });

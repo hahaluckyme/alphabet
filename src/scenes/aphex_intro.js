@@ -1,4 +1,3 @@
-import React from 'react';
 import * as style from 'style';
 import * as game from 'game';
 
@@ -44,22 +43,16 @@ export function aphex_intro() {
 
       willingness = 'yes';
       yes();
-      game.go('aphex_church');
+      game.play('aphex_church');
     },
     'Yes (tentative)': function() {
       game.print(style.text`
         You agree to help her out, but you keep silent that you're pretty sure you'll ditch the moment it gets dangerous for you.
-
-        She lowers her body, kneeling on one knee with her head down.
-
-        ${style.pink}
-        "Thank you."
-        ${style.normal}
       `);
 
       willingness = 'tentative';
       yes();
-      game.go('aphex_church');
+      game.play('aphex_church');
     },
     'No': function() {
       game.print(style.text`
@@ -95,7 +88,7 @@ export function aphex_intro() {
               You blink and find yourself in a totally different place.
             `);
 
-            game.go('aphex_church');
+            game.play('aphex_church');
           },
         },
         {
@@ -120,5 +113,7 @@ function yes() {
     ${style.normal}
 
     You can feel a rush of energy enter your body, awakening nerves you never knew you had.
+
+    You blink and find yourself in a totally different place.
   `);
 }
