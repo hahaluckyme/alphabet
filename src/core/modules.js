@@ -26,6 +26,7 @@ Object.keys(scene_modules).forEach(module_name => {
 // room module names are the room itself.
 // all scenes within a room can also be accessed universally if not one of the Room-specific Scenes
 Object.keys(room_modules).forEach(module_name => {
+  console.log(module_name);
   const module = room_modules[module_name];
   module.has_entered = false;
   module.name = module_name;
