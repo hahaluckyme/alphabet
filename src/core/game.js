@@ -1,7 +1,5 @@
 require('prototypes');
 const React = require('react');
-const modules = require('modules');
-const {scenes, rooms} = modules;
 
 export const ALLOWED_KEYS = [
   '1', '2', '3', '4', '5',
@@ -20,6 +18,7 @@ export function hook(comp) {
 }
 
 export function go(room) {
+  const {scenes, rooms} = require('modules');
   if (cur_room != null) {
     cur_room.onExit && play(cur_room.onExit);
   }
@@ -41,6 +40,7 @@ export function go(room) {
 }
 
 export function play(scene) {
+  const {scenes, rooms} = require('modules');
   cur_choice = null;
   if (cur_scene != null) {
     component.print(<span>{'\n'}</span>);
@@ -52,11 +52,12 @@ export function play(scene) {
       : scenes[scene];
   }
 
-  cur_scene = scene.name;
+  cur_scene = scene.scene_name;
   scene();
 }
 
 export function load() {
+  const modules = require('modules');
   try {
     // throw new Error();
     const save = JSON.parse(localStorage.getItem('save'));
@@ -78,6 +79,7 @@ export function save() {
     oldSave = {};
   }
 
+  const modules = require('modules');
   const state = modules.saveState();
   const save = {
     // ...oldSave,

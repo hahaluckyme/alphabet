@@ -21,7 +21,7 @@ Object.keys(scene_modules).forEach(module_name => {
   Object.keys(module).forEach(property_name => {
     if (typeof module[property_name] === 'function') {
       const scene = module[property_name];
-      scene.name = module_name;
+      scene.scene_name = module_name;
       scenes[property_name] = scene;
     }
   });
