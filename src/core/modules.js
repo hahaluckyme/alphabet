@@ -1,4 +1,5 @@
 const requireAllModules = require('requireAllModules').default;
+import preval from 'babel-plugin-preval/macro'
 
 const scenes = {};
 const rooms = {};
@@ -12,6 +13,8 @@ module.exports = {
 // scene modules just contain scenes, pretty much
 const scene_modules = requireAllModules(require.context('data/scenes', true, /\.js$/));
 const room_modules = requireAllModules(require.context('data/rooms', true, /\.js$/));
+console.log(scene_modules);
+console.log(room_modules);
 
 Object.keys(scene_modules).forEach(module_name => {
   const module = scene_modules[module_name];
