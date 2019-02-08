@@ -1,6 +1,7 @@
-import 'prototypes';
-import React from 'react';
-import scenes from 'scenes';
+require('prototypes');
+const React = require('react');
+const modules = require('modules');
+const {scenes, rooms} = modules;
 
 export const ALLOWED_KEYS = [
   '1', '2', '3', '4', '5',
@@ -9,6 +10,7 @@ export const ALLOWED_KEYS = [
 ];
 
 let component = null;
+let cur_room = null;
 let cur_scene = null;
 let cur_choice = null;
 
@@ -17,29 +19,71 @@ export function hook(comp) {
   load();
 }
 
+export function go(room) {
+  if (cur_room != null) {
+    cur_room.onExit && play(cur_room.onExit);
+  }
+
+  if (typeof room === 'string') {
+    room = rooms[room];
+  }
+
+  cur_room = room.name;
+
+  const onEnter = !room.has_entered
+    ? (room.onFirstEnter || room.onEnter)
+    : (room.onEnter);
+
+  room.onEnter && play(room.onEnter);
+  room.has_entered = true;
+}
+
 export function play(scene) {
+  cur_choice = null;
   if (cur_scene != null) {
     component.print(<span>{'\n'}</span>);
   }
-  cur_scene = scene;
-  scenes[scene]();
-  save();
+
+  if (typeof scene === 'string') {
+    scene = scene in rooms[cur_room]
+      ? rooms[cur_room][scene]
+      : scenes[scene];
+  }
+
+  cur_scene = scene.name;
+  scene();
 }
 
 export function load() {
   try {
-    throw new Error();
+    // throw new Error();
     const save = JSON.parse(localStorage.getItem('save'));
+    console.log(save);
+    modules.loadState(save);
+    cur_room = save.cur_room;
     play(save.cur_scene);
   } catch (e) {
-    play('aphex_intro');
+    console.error(e);
+    play(scenes.aphex_intro);
   }
 }
 
 export function save() {
+  let oldSave;
+  try {
+    oldSave = JSON.parse(localStorage.getItem('save'));
+  } catch (e) {
+    oldSave = {};
+  }
+
+  const state = modules.saveState();
   const save = {
+    // ...oldSave,
+    ...state,
+    cur_room,
     cur_scene,
   };
+  console.log(save);
   localStorage.setItem('save', JSON.stringify(save));
 }
 
@@ -98,5 +142,6 @@ export async function execute(key) {
       print(<span>{'\n'}<b>> {cur_choice[key].label}</b>{'\n'}</span>);
       cur_choice[key].action();
     }
+    save();
   }
 }

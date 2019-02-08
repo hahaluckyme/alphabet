@@ -1,12 +1,10 @@
-import 'prototypes';
-import React from 'react';
-import * as ReactIs from 'react-is';
-import * as game from 'game';
+require('prototypes');
+const React = require('react');
+const ReactIs = require('react-is');
+const game = require('game');
 
-import logo from 'logo.svg';
-import 'App.css';
-
-import * as scenes from 'scenes';
+const logo = require('logo.svg');
+require('App.css');
 
 class App extends React.Component {
   state = {

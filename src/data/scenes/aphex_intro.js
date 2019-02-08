@@ -1,10 +1,7 @@
-import * as style from 'style';
-import * as game from 'game';
-
-var willingness;
+export var willingness;
 
 export function aphex_intro() {
-  game.print(style.text`
+  game.print(`
     You try to open your eyes but see only darkness. You instinctively blink a few times, but you can't feel your eyelids. But you know there to be a silhouette in front of you--its very existence exuding power into your soul.
 
     It speaks a command that you cannot hear and your body lurches forward in response, pushing you through a ethereal fabric, tearing a hole for you to enter. Passing through, your body feels heavy and you fall to your knees, gasping for air as your lungs fill with air for what seems like the first time. Your ${true ? 'rough' : 'gentle'} entry knocks over a candle on the floor.
@@ -36,26 +33,26 @@ export function aphex_intro() {
 
   // setting the choices by using a constant label map
   game.choose({
-    'Yes (truth)': function() {
-      game.print(style.text`
+    'Yes': function() {
+      game.print(`
         You agree that you will do it. You're not sure what you need to do or if you can succeed, but you will try your best to help her.
       `);
 
       willingness = 'yes';
       yes();
-      game.play('aphex_church');
+      game.go(rooms.church);
     },
-    'Yes (tentative)': function() {
-      game.print(style.text`
+    'Yes (lie)': function() {
+      game.print(`
         You agree to help her out, but you keep silent that you're pretty sure you'll ditch the moment it gets dangerous for you.
       `);
 
       willingness = 'tentative';
       yes();
-      game.play('aphex_church');
+      game.go(rooms.church);
     },
     'No': function() {
-      game.print(style.text`
+      game.print(`
         You say that she's definitely looking for another person--there's no way that someone like you would do this, let alone be able to! You're just a regular person.
 
         Her expression tightens and you feel like she may not be entirely interested in sending you home.
@@ -78,7 +75,7 @@ export function aphex_intro() {
         {
           label: 'Yes',
           action: function() {
-            game.print(style.text`
+            game.print(`
               You open your mouth, but find yourself incapable of refusing her. You agree to help her out as best you can.
 
               ${style.pink}
@@ -88,7 +85,7 @@ export function aphex_intro() {
               You blink and find yourself in a totally different place.
             `);
 
-            game.play('aphex_church');
+            game.go(rooms.church);
           },
         },
         {
@@ -101,7 +98,7 @@ export function aphex_intro() {
 }
 
 function yes() {
-  game.print(style.text`
+  game.print(`
     ${style.pink}
     "I thank you for your service. And the world does not know it yet, but it thanks you, too."
     ${style.normal}

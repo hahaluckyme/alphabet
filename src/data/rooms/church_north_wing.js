@@ -1,8 +1,5 @@
-import * as game from 'game';
-import * as style from 'style';
-
-export function north_wing() {
-  game.print(style.text`
+export function onEnter() {
+  game.print(`
     A nondescript north wing.
   `);
 
@@ -10,12 +7,12 @@ export function north_wing() {
     's': {
       label: 'Church Hall',
       action: function() {
-        game.print(style.text`
+        game.print(`
           You go back to the main church area.
         `);
 
-        game.play('aphex_church');
+        game.go(rooms.church);
       },
     },
   });
-};
+}
