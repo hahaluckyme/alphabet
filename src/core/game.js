@@ -28,6 +28,7 @@ export function go(room) {
     room = rooms[room];
   }
 
+  console.log(rooms);
   console.log(room);
   cur_room = room.name;
 
