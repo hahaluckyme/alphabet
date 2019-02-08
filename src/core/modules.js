@@ -38,6 +38,7 @@ Object.keys(room_modules).forEach(module_name => {
       if (/^on[^a-z]/.test(module[property_name].name)) {
         // a scene in a room that's NOT an interface scene? save it into the room itself
         rooms[module_name] = module;
+        console.log(module_name);
       } else {
         // otherwise collect the exported regular scene
         scenes[property_name] = module[property_name];
