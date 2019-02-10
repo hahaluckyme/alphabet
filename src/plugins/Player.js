@@ -4,7 +4,7 @@ export function load(data) {
   try {
     Object.assign(Player, data);
   } catch (e) {
-    console.error('save could not be loaded: ' + e.message);
+    console.error('save for Player could not be loaded: ' + e.message);
     Player = {};
   }
 }

@@ -28,13 +28,15 @@ class App extends React.Component {
   }
 
   load() {
-    const save = JSON.parse(localStorage.getItem('save'));
+    const data = JSON.parse(localStorage.getItem('save'));
+    console.log(data);
     // game.load(save);
     game.load({});
   }
 
   save() {
     const data = game.save();
+    console.log(data);
     localStorage.setItem('save', JSON.stringify(data));
   }
 
@@ -143,7 +145,7 @@ class App extends React.Component {
             opacity: 0.3,
           }}
         >
-          {key}
+          -
         </button>
       );
     }

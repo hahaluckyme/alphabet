@@ -1,4 +1,4 @@
-export default {
-  Scene: require('Scene'),
-  Player: require('Player'),
-};
+module.exports = {
+  'Scene': require('Scene'),
+  'Player': require('Player'),
+}

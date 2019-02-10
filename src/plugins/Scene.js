@@ -13,7 +13,7 @@ export function load(data) {
   try {
     play(data.cur_scene);
   } catch (e) {
-    console.error('save could not be loaded: ' + e.message);
+    console.error('save for Scene could not be loaded: ' + e.message);
     play(Intro);
   }
 }
@@ -22,7 +22,6 @@ export function save() {
   const data = {
     cur_scene: cur_scene,
   };
-  console.log(data);
   // Object.keys(scenes).forEach(scene_name => {
   //   console.log(scene_name);
   // });
@@ -33,10 +32,6 @@ export function play(scene) {
   if (typeof scene === 'function') {
     scene();
     return;
-  }
-
-  if (cur_scene != null) {
-    game.print(<span>{'\n'}</span>);
   }
 
   // if (typeof scene === 'string') {
