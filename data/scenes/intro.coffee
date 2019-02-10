@@ -1,10 +1,11 @@
 import {text, pink, normal} from 'style'
-import {print, play, go} from 'game'
-import {church, introNo} from 'scenes.mock'
-import Scene from 'entities/Scene'
-import LuckyMixin from 'data/scenes/LuckyMixin'
+import {print} from 'game'
+import {play} from 'Scene'
+import Scene from 'Scene'
+import {IntroNo} from 'scenes.mock'
+import Player from 'Player'
 
-introYes = ->
+IntroYes = ->
   print"""
     #{pink}
     "I thank you for your service. And the world does not know it yet, but it thanks you, too."
@@ -20,7 +21,7 @@ introYes = ->
 
     You blink and find yourself in a totally different place.
   """
-  # go church
+  # go Church
 
 export default Object.assign new Scene,
   writer: 'Lucky'
@@ -42,15 +43,15 @@ export default Object.assign new Scene,
     print"""
       You agree that you will do it. You're not sure what you need to do or if you can succeed, but you will try your best to help her.
     """
-    willingness = "yes"
-    play introYes
+    Player.is_willing = true
+    play IntroYes
 
   "2 Yes (lie)": ->
     print"""
       You agree that you will do it. You're not sure what you need to do or if you can succeed, but you will try your best to help her.
     """
-    willingness = "yes"
-    play introYes
+    Player.is_willing = true
+    play IntroYes
 
   "3 No": ->
-    play introNo
+    play IntroNo

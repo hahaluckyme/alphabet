@@ -24,17 +24,13 @@ class App extends React.Component {
     document.title = 'Alpha';
     this.historyRef.scrollTop = 0;
     game.hook(this);
-    game.restart(); // change to this.load() when ready
+    this.load();
   }
 
   load() {
-    try {
-      const save = JSON.parse(localStorage.getItem('save'));
-      game.load(save);
-    } catch (e) {
-      console.error(e);
-      game.restart();
-    }
+    const save = JSON.parse(localStorage.getItem('save'));
+    // game.load(save);
+    game.load({});
   }
 
   save() {
@@ -138,6 +134,32 @@ class App extends React.Component {
     );
   }
 
+  _renderControlButton(key) {
+    if (key !== 'z') {
+      return (
+        <button
+          disabled={true}
+          style={{
+            opacity: 0.3,
+          }}
+        >
+          {key}
+        </button>
+      );
+    }
+
+    return (
+      <button
+        onClick={() => this.save()}
+        style={{
+          opacity: 1,
+        }}
+      >
+        Save
+      </button>
+    );
+  }
+
   render() {
     return (
       <div className="root">
@@ -176,6 +198,13 @@ class App extends React.Component {
             {this._renderButton('d')}
             {this._renderButton('f')}
             {this._renderButton('g')}
+          </div>
+          <div className="inputRow">
+            {this._renderControlButton('z')}
+            {this._renderControlButton('x')}
+            {this._renderControlButton('c')}
+            {this._renderControlButton('v')}
+            {this._renderControlButton('b')}
           </div>
         </div>
       </div>

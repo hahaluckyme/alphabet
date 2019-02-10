@@ -1,14 +1,15 @@
 import {text, pink, normal} from 'style'
-import {print, play, go} from 'game'
+import {print} from 'game'
+import {play} from 'Scene'
+import Scene from 'Scene'
 import {introNo} from 'scenes.mock'
-import Scene from 'entities/Scene'
-import LuckyMixin from 'data/scenes/LuckyMixin'
+import Player from 'Player'
 
 export default Object.assign new Scene,
   writer: 'Lucky'
 
   onPlay: ->
-    willingness = "no"
+    Player.is_willing = false
     print"""
       You say that she's definitely looking for another person--there's no way that someone like you would do this, let alone be able to! You're just a regular person.
       Her expression tightens and you feel like she may not be entirely interested in sending you home.
