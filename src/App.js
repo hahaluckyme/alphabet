@@ -6,18 +6,40 @@ const game = require('game');
 const logo = require('logo.svg');
 require('App.css');
 
+const ALLOWED_KEYS = [
+  '1', '2', '3', '4', '5',
+  'q', 'w', 'e', 'r', 't',
+  'a', 's', 'd', 'f', 'g',
+];
+
 class App extends React.Component {
   state = {
     history: [],
-    choices: {},
+    cur_choices: {},
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     // need to hook this component into the template strings in each scene
-    await game.hook(this);
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.title = 'Alpha';
     this.historyRef.scrollTop = 0;
+    game.hook(this);
+    game.restart(); // change to this.load() when ready
+  }
+
+  load() {
+    try {
+      const save = JSON.parse(localStorage.getItem('save'));
+      game.load(save);
+    } catch (e) {
+      console.error(e);
+      game.restart();
+    }
+  }
+
+  save() {
+    const data = game.save();
+    localStorage.setItem('save', JSON.stringify(data));
   }
 
   sanitizeNode(node) {
@@ -36,36 +58,46 @@ class App extends React.Component {
     }
   }
 
-  async print(node) {
+  print(node) {
     node = this.sanitizeNode(node);
 
-    await this.setState(prevState => {
-      prevState.history.push(node);
-      return {
-        history: prevState.history,
-      };
-    });
+    this.state.history.push(node);
+    this.forceUpdate();
     this.historyRef.scrollTop = this.historyRef.scrollHeight;
   }
 
-  async setChoices(mapping) {
-    await this.setState(prevState => ({
-      choices: mapping,
-    }));
+  setChoices(choices) {
+    this.setState({
+      cur_choices: choices,
+    });
   }
 
-  async onKeyDown(event) {
-    if (!game.ALLOWED_KEYS.includes(event.key)) {
+  play(scene) {
+    scenes[scene].play();
+  }
+
+  execute(key) {
+    const {cur_choices} = this.state;
+    if (!(key in cur_choices)) {
       return;
     }
 
-    game.execute(event.key);
+    this.print(<span>{'\n'}<b>> {cur_choices[key].label}</b>{'\n'}</span>);
+    cur_choices[key].action();
+  }
+
+  onKeyDown(event) {
+    if (!ALLOWED_KEYS.includes(event.key)) {
+      return;
+    }
+
+    this.execute(event.key);
   }
 
   _renderButton(key) {
-    const {choices} = this.state;
+    const {cur_choices} = this.state;
 
-    if (choices[key] == null) {
+    if (!(key in cur_choices)) {
       return (
         <button
           disabled={true}
@@ -78,8 +110,8 @@ class App extends React.Component {
       );
     }
 
-    const isButtonDisabled = choices[key].disabled === true
-      || typeof choices[key].disabled === 'string';
+    const isButtonDisabled = cur_choices[key].disabled === true
+      || typeof cur_choices[key].disabled === 'string';
 
     if (isButtonDisabled) {
       return (
@@ -89,19 +121,19 @@ class App extends React.Component {
             opacity: 0.6,
           }}
         >
-          {choices[key].label}
+          {cur_choices[key].label}
         </button>
       );
     }
 
     return (
       <button
-        onClick={() => game.execute(key)}
+        onClick={() => this.execute(key)}
         style={{
           opacity: 1,
         }}
       >
-        {choices[key].label}
+        {cur_choices[key].label}
       </button>
     );
   }

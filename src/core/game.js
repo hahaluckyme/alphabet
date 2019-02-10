@@ -1,11 +1,7 @@
 require('prototypes');
 const React = require('react');
-
-export const ALLOWED_KEYS = [
-  '1', '2', '3', '4', '5',
-  'q', 'w', 'e', 'r', 't',
-  'a', 's', 'd', 'f', 'g',
-];
+const style = require('style');
+const scenes = require('scenes');
 
 let component = null;
 let cur_room = null;
@@ -14,11 +10,9 @@ let cur_choice = null;
 
 export function hook(comp) {
   component = comp;
-  load();
 }
 
 export function go(room) {
-  const {scenes, rooms} = require('modules');
   if (cur_room != null) {
     cur_room.onExit && play(cur_room.onExit);
   }
@@ -40,59 +34,50 @@ export function go(room) {
 }
 
 export function play(scene) {
-  const {scenes, rooms} = require('modules');
+  if (typeof scene === 'function') {
+    scene();
+    return;
+  }
+
   cur_choice = null;
   if (cur_scene != null) {
     component.print(<span>{'\n'}</span>);
   }
 
-  if (typeof scene === 'string') {
-    scene = scene in rooms[cur_room]
-      ? rooms[cur_room][scene]
-      : scenes[scene];
-  }
+  // if (typeof scene === 'string') {
+  //   scene = scene in rooms[cur_room]
+  //     ? rooms[cur_room][scene]
+  //     : scenes[scene];
+  // }
 
-  cur_scene = scene.scene_name;
-  scene();
+  cur_scene = name;
+  scenes[scene].play();
+
+  // set choices from the scene
+  component.setChoices(scenes[scene].getChoices());
 }
 
-export function load() {
-  const modules = require('modules');
-  try {
-    // throw new Error();
-    const save = JSON.parse(localStorage.getItem('save'));
-    console.log(save);
-    modules.loadState(save);
-    cur_room = save.cur_room;
-    play(save.cur_scene);
-  } catch (e) {
-    console.error(e);
-    play(scenes.aphex_intro);
-  }
+export function restart() {
+  cur_room = null;
+  play('intro');
+}
+
+export function load(data) {
+  console.log(data);
+  cur_room = data.cur_room;
+  play(data.cur_scene);
 }
 
 export function save() {
-  let oldSave;
-  try {
-    oldSave = JSON.parse(localStorage.getItem('save'));
-  } catch (e) {
-    oldSave = {};
-  }
-
-  const modules = require('modules');
-  const state = modules.saveState();
   const save = {
-    // ...oldSave,
-    ...state,
     cur_room,
     cur_scene,
   };
-  console.log(save);
-  localStorage.setItem('save', JSON.stringify(save));
+  return save;
 }
 
-export function print(fragment) {
-  component.print(fragment);
+export function print(strings, ...keys) {
+  component.print(style.text(strings, ...keys));
   component.print('\n');
 }
 
@@ -132,9 +117,6 @@ export function choose(mapping) {
     }));
     choose(mapping);
   }
-}
-
-export function change_mana() {
 }
 
 export async function execute(key) {
