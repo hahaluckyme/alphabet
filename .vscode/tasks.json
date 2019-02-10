@@ -1,0 +1,82 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+            "label": "install",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "install"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+		},
+		{
+            "label": "update",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "update"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+		},
+        {
+            "label": "build",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "build"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },	
+        {
+            "label": "test",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "test"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },	
+        {
+            "label": "predeploy",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "predeploy"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "forget",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "forget"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "deploy",
+			"command": "npm",
+	        "type": "shell",
+            "args": [
+                "deploy"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+		},
+	]
+}
