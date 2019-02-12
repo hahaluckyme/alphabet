@@ -23,11 +23,23 @@ import {
 
 import Player from 'Player';
 
+import {
+  enter
+} from 'Room';
+
+import Room from 'Room';
+
+import {
+  Church,
+  ChurchWestWing,
+  ChurchNorthWing
+} from 'rooms.mock';
+
 IntroYes = function() {
-  return print`${pink}\n"I thank you for your service. And the world does not know it yet, but it thanks you, too."\n${normal}\n\nShe stands up and puts her hand on your shoulder.\n\n${pink}\n"I will bestow your body with the mana I can sacrifice. However, your body has no ability to regenerate it.\n${normal}\n\nYou can feel a rush of energy enter your body, awakening nerves you never knew you had.\n\nYou blink and find yourself in a totally different place.`;
+  print`${pink}\n"I thank you for your service. And the world does not know it yet, but it thanks you, too."\n${normal}\n\nShe stands up and puts her hand on your shoulder.\n\n${pink}\n"I will bestow your body with the mana I can sacrifice. However, your body has no ability to regenerate it.\n${normal}\n\nYou can feel a rush of energy enter your body, awakening nerves you never knew you had.\n\nYou blink and find yourself in a totally different place.`;
+  return enter(Church);
 };
 
-// go Church
 export default Object.assign(new Scene, {
   writer: 'Lucky',
   onPlay: function() {

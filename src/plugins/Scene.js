@@ -1,11 +1,6 @@
-import React from 'react';
 import * as game from 'game';
-import * as scenes from 'scenes';
+import UnimplementedError from 'UnimplementedError';
 import {Intro} from 'scenes.mock';
-
-function UnimplementedError(msg) {
-  return new Error(msg);
-}
 
 let cur_scene = null;
 
@@ -29,6 +24,8 @@ export function save() {
 }
 
 export function play(scene) {
+  const scenes = require('scenes'); // lazily loading the rooms at the latest time
+
   if (typeof scene === 'function') {
     scene();
     return;

@@ -4,6 +4,9 @@ import {play} from 'Scene'
 import Scene from 'Scene'
 import {IntroNo} from 'scenes.mock'
 import Player from 'Player'
+import {enter} from 'Room'
+import Room from 'Room'
+import {Church, ChurchWestWing, ChurchNorthWing} from 'rooms.mock'
 
 IntroYes = ->
   print"""
@@ -21,7 +24,7 @@ IntroYes = ->
 
     You blink and find yourself in a totally different place.
   """
-  # go Church
+  enter Church
 
 export default Object.assign new Scene,
   writer: 'Lucky'

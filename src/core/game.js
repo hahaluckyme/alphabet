@@ -1,3 +1,4 @@
+console.log(require('rooms.mock'));
 const React = require('react');
 const style = require('style');
 const scenes = require('scenes');
