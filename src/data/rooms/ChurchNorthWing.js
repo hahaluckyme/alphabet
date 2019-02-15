@@ -36,10 +36,18 @@ import {
 export default Object.assign(new Room, {
   writer: 'Lucky',
   onEnter: function() {
-    return print`A nondescript north wing.`;
+    return print`A nondescript north wing. You see a large boulder blocking a passageway.`;
   },
   "s North Wing": function() {
-    print`You go back to the main church area.`;
+    print`You go back to the main church area. You feel a bit stronger for some strange reason.`;
+    Player.addStat('strength', 1);
     return enter(Church);
+  },
+  "e Attempt to Move Boulder": function() {
+    if (Player.statistics.strength > 5) {
+      return print`You successfully move the boulder, but the passageway was only a trick of your imagination.`;
+    } else {
+      return print`You are unable to move the boulder and give up.`;
+    }
   }
 });
