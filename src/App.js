@@ -1,10 +1,11 @@
 require('prototypes');
 const React = require('react');
 const ReactIs = require('react-is');
-const game = require('game');
 
 const logo = require('logo.svg');
 require('App.css');
+const data = require('data');
+const game = require('game');
 
 const ALLOWED_KEYS = [
   '1', '2', '3', '4', '5',
@@ -18,26 +19,13 @@ class App extends React.Component {
     cur_choices: {},
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     // need to hook this component into the template strings in each scene
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.title = 'Alpha';
     this.historyRef.scrollTop = 0;
     game.hook(this);
-    this.load();
-  }
-
-  load() {
-    const data = JSON.parse(localStorage.getItem('save'));
-    console.log(data);
-    // game.load(save);
-    game.load({});
-  }
-
-  save() {
-    const data = game.save();
-    console.log(data);
-    localStorage.setItem('save', JSON.stringify(data));
+    this.print(await data.intro1());
   }
 
   sanitizeNode(node) {
@@ -64,24 +52,30 @@ class App extends React.Component {
     this.historyRef.scrollTop = this.historyRef.scrollHeight;
   }
 
-  setChoices(choices) {
+  setChoices(raw_choices) {
+    const choices = {};
+    let i = 1;
+    for (const choice in raw_choices) {
+      choices[''+i] = {
+        label: choice,
+        action: raw_choices[choice],
+      };
+      i += 1;
+    }
     this.setState({
       cur_choices: choices,
     });
   }
 
-  play(scene) {
-    scenes[scene].play();
-  }
-
-  execute(key) {
+  async execute(key) {
     const {cur_choices} = this.state;
     if (!(key in cur_choices)) {
       return;
     }
 
+    data.reset();
     this.print(<span>{'\n'}<b>> {cur_choices[key].label}</b>{'\n'}</span>);
-    cur_choices[key].action();
+    this.print(await cur_choices[key].action());
   }
 
   onKeyDown(event) {

@@ -67,15 +67,17 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
-    "start": "npm-run-all -p coffee-watch watch",
+    "start": "npm-run-all -p compile-watch serve",
+    "serve": "node scripts/start.js",
     "build": "npm run coffee && node scripts/build.js",
     "test": "node scripts/test.js",
     "predeploy": "npm run build",
     "forget": "rm -rf ./node_modules/.cache/babel-loader/*",
     "deploy": "git push && gh-pages -d build",
-    "coffee": "coffee -c -o src/data/ -b data/",
-    "coffee-watch": "coffee -c -o src/data/ -b -w data/",
-    "watch": "node scripts/start.js"
+    "compile": "find data/ -name \"*.coffee\" | xargs cat | coffee -c --stdio > src/data.js",
+    "compile-watch": "nodemon --watch data -e coffee --exec \"npm run compile\"",
+    "compile-test": "nodemon --watch data -e coffee --exec \"npm run compile && node src/data.js\"",
+    "coffee-test": "nodemon --watch src/test.coffee --exec \"coffee -c src/test.coffee && node src/test.js\""
   },
   "eslintConfig": {
     "extends": "react-app"

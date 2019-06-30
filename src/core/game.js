@@ -1,8 +1,4 @@
-console.log(require('rooms.mock'));
 const React = require('react');
-const style = require('style');
-const scenes = require('scenes');
-const plugins = require('plugins');
 
 let component = null;
 let cur_choice = null;
@@ -59,7 +55,7 @@ export function printRaw(node) {
   component.print(node);
 }
 
-export function print(strings, ...keys) {
-  component.print(style.text(strings, ...keys));
+export function print(string) {
+  component.print(string);
   component.print(<span>{'\n'}</span>);
 }
