@@ -1,16 +1,25 @@
 # How to contribute
 
-Install git bash
-https://git-scm.com/downloads
+1. Install VSCode
+https://code.visualstudio.com/
 
-Install node.js (npm)
+2. Install Visual Studio Live Share
+https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack
+
+3. Install Github Desktop
+https://desktop.github.com/
+
+a. Click `Clone Repository`
+b. Click `URL` and type `https://github.com/hahaluckyme/alpha`
+
+4. Install Node JS, version `Recommended For Most Users`
 https://nodejs.org/en/
 
-Right click where you want to install this project folder into and click `Git Bash Here` and run the command
-`git clone https://github.com/hahaluckyme/alpha`
+5. Open VSCode and press `CTRL+SHIFT+P`
+a. `npm install dependencies`
+b. `npm start`
 
-To play a local version of the game, run
-`npm start`
+6. Make changes and use Github Desktop to record and push changes.
 
 To update the github repo, run
 `npm run deploy`
