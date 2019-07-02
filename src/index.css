@@ -8,7 +8,110 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.root {
+  height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  width: 100vw;
+  color: ivory;
+}
+
+.column {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+}
+
+.header {
+  font-size: calc(10px + 2vmin);
+  background-color: #282c34;
+}
+
+.logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 10vmin;
+}
+
+.centered {
+  align-items: center;
+}
+
+.fill {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.scroll {
+  overflow-y: scroll;
+}
+
+.sidebar {
+  width: 100px;
+  background-color: #282c34;
+}
+
+.sidetopbar {
+}
+
+.minimap {
+  height: 200px;
+  width: 200px;
+  background-color: #382c34;
+}
+
+.textbox {
+  display: block;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: 20px;
+  background-color: #484858;
+}
+
+.textbox span {
+  -webkit-animation: fade 1s ease-in 1;
+  animation: fade 1s ease-in 1;
+}
+
+.buttons {
+  background-color: #444444;
+}
+
+button {
+  border-radius: 5px;
+  border: 1px solid gray;
+  background-color: #555555;
+  color: inherit;
+}
+
+button:active, button.active {
+  background-color: #333333;
+}
+
+@-webkit-keyframes fade {
+   0% {background: #666600;}
+   100% {background: none;}
+}
+
+@keyframes fade {
+   0% {background: #666600;}
+   100% {background: none;}
+}
+
+.pink {
+  color: pink;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

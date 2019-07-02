@@ -1,58 +1,81 @@
+const data = require('data');
 const React = require('react');
 
 let component = null;
-let cur_choice = null;
+let cur_location = null;
+let cur_choices = null;
+let cur_resolves = [];
 
+// functions to the game engine
+export async function playScene(scene_name) {
+  component.print(<span>> {scene_name}{'\n'}</span>);
+  const choices = cur_location.choices ? cur_location.choices() : [];
+  const choice_labels = Object.keys(choices);
+  let scene;
+  if (cur_choices[scene_name]) {
+    scene = cur_choices[scene_name];
+  } else if (choice_labels.includes(scene_name)) {
+    scene = choices[scene_name];
+  } else {
+    scene = data[scene_name];
+  }
+  setChoices({});
+  await scene();
+  data.flush(true);
+  if (cur_resolves.length > 0) {
+    const cur_resolve = cur_resolves.pop();
+    cur_resolve();
+  } else {
+    if (Object.keys(cur_choices).length === 0) {
+      setChoices(cur_location.choices);
+    }
+  }
+}
+
+export async function goTo(location_name) {
+  data.flush(true);
+  const location = data[location_name];
+  cur_location = location;
+  if (location.enter) {
+    await location.enter();
+    data.flush(true);
+    if (location.choices) {
+      setChoices(location.choices);
+    }
+  }
+}
+
+// functions back to the renderer
 export function hook(comp) {
   component = comp;
 }
 
-export function load(data) {
-  try {
-    Object.keys(plugins).forEach(plugin_name => {
-      plugins[plugin_name].load(data[plugin_name]);
-    });
-  } catch (e) {
-    console.error('save for game could not be loaded: ' + e.message);
+export function setChoices(raw_choices, resolve) {
+  if (typeof raw_choices === 'function') {
+    raw_choices = raw_choices()
   }
-}
 
-export function save() {
-  const data = {};
-  Object.keys(plugins).forEach(plugin_name => {
-    const plugin_data = plugins[plugin_name].save();
-    if (plugin_data) {
-      data[plugin_name] = plugin_data;
+  const choices = {};
+  const directions = {};
+
+  cur_choices = raw_choices;
+
+  for (const raw_choice in raw_choices) {
+    if (!raw_choices[raw_choice]) {
+      continue;
     }
-  });
-  return data;
-}
 
-// export function go(room) {
-//   if (cur_room != null) {
-//     cur_room.onExit && play(cur_room.onExit);
-//   }
-//
-//   if (typeof room === 'string') {
-//     room = rooms[room];
-//   }
-//
-//   cur_room = room.name;
-//
-//   const onEnter = !room.has_entered
-//     ? (room.onFirstEnter || room.onEnter)
-//     : (room.onEnter);
-//
-//   room.onEnter && play(room.onEnter);
-//   room.has_entered = true;
-// }
+    if (['down', 'north', 'up', 'west', 'south', 'east'].includes(raw_choice)) {
+      directions[raw_choice] = raw_choice;
+    } else {
+      choices[raw_choice] = raw_choice;
+    }
+  }
 
-export function setChoices(choices) {
-  component.setChoices(choices);
-}
-
-export function printRaw(node) {
-  component.print(node);
+  if (resolve) {
+    cur_resolves.push(resolve);
+  }
+  component.setState({choices, directions});
 }
 
 export function print(string) {
