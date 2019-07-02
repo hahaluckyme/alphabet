@@ -6,13 +6,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #222222;
 }
 
 .root {
+  margin: auto;
+  max-width: 1280px;
   height: 100vh;
-  overflow: hidden;
-  position: absolute;
   width: 100vw;
+  overflow: hidden;
   color: ivory;
 }
 
@@ -31,6 +33,7 @@ body {
 .header {
   font-size: calc(10px + 2vmin);
   background-color: #282c34;
+  border-bottom: 5px solid black;
 }
 
 .logo {
@@ -87,8 +90,8 @@ button {
   border: 1px solid gray;
   background-color: #555555;
   color: inherit;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 button:active, button.active {
