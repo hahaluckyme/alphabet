@@ -3,7 +3,6 @@ const React = require('react');
 
 const Header = require('./Header').default;
 const GameWindow = require('./GameWindow').default;
-const Div100vh = require('react-div-100vh').default;
 
 class App extends React.Component {
   async componentDidMount() {
@@ -12,10 +11,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <Div100vh className="root column">
+      <div className="root column">
         <Header />
         <GameWindow />
-      </Div100vh>
+      </div>
     );
   }
 }

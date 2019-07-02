@@ -33,7 +33,7 @@ body {
 .header {
   font-size: calc(10px + 2vmin);
   background-color: #282c34;
-  border-bottom: 5px solid black;
+  border-bottom: 2px solid black;
 }
 
 .logo {
@@ -97,25 +97,6 @@ button:active, button.active {
   background-color: #333333;
 }
 
-@-webkit-keyframes fade {
-   0% {background: #666600;}
-   100% {background: none;}
-}
-
-@keyframes fade {
-   0% {background: #666600;}
-   100% {background: none;}
-}
-
 .pink {
   color: pink;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
