@@ -87,6 +87,8 @@ button {
   border: 1px solid gray;
   background-color: #555555;
   color: inherit;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 button:active, button.active {

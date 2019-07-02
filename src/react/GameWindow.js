@@ -111,13 +111,13 @@ class GameWindow extends React.Component {
 
     return (
       <div className="game row fill">
-        <div className="sidebar column">
+        {/* <div className="sidebar column">
           <div className="sidetopbar fill column">
             <div>room: {this.state.cur_room}</div>
             <div>scene: {this.state.cur_scene}</div>
           </div>
           <div className="minimap">minimap</div>
-        </div>
+        </div> */}
         <div className="main fill column">
           <div
             className="textbox fill column scroll"
