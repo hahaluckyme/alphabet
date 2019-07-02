@@ -29,7 +29,7 @@ export Lars = new class extends NPC
       "No!": =>
       "Then what year is it?": =>
 
-    say paragraph "Shocked, he ponders for a second and taps his finger to his snout. \"Oh... I've heard of this before. You're one of the time jumpers. Didn't think those were real.\" You stare at him. \"People who were shot into the future when the Burst happened? Well, I guess you wouldn't have heard of it if you really are one. That's crazy!\""
+    say paragraph "Shocked, he ponders for a few seconds and taps his finger to his snout. \"Oh... I've heard of this before. You're one of the time jumpers. Didn't think those were real.\" You stare at him. \"People who were shot into the future when the Burst happened? Well, I guess you wouldn't have heard of it if you really are one. That's crazy!\""
 
     await choice =>
       "Stare": =>

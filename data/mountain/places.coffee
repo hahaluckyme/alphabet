@@ -43,7 +43,23 @@ export mountain = new class extends Room
   take_bottles: false
 
   enter: =>
-    say paragraph "There looks to be a campsite here. Around it is a tent, chair, and basic supplies, including cookware and two bottles of what looks like water. The fire is burning lightly."
+    say paragraph "There looks to be a campsite here."
+    switch
+      when not @take_chair and not @take_pot and not @take_bottles
+        say "Around it are a tent, chair, and basic supplies, including cookware and two bottles of what looks like water."
+      when not @take_chair and not @take_pot
+        say "Around it are a tent, chair, and a pot with some silverware next to it."
+      when not @take_chair and not @take_bottles
+        say "Around it are a tent, chair, and two water bottles standing near the base of hte fire pit."
+      when not @take_pot and not @take_bottles
+        say "Around it are a tent, some basic cookware, and two water bottles."
+      when not @take_chair
+        say "Around it are a tent and a chair."
+      when not @take_pot
+        say "Around it are a tent and a pot with some silverware."
+      when not @take_bottles
+        say "Around it are a tent and two lonely water bottles."
+    say "The fire is burning lightly."
 
   choices: =>
     if not Lars.met
@@ -63,9 +79,9 @@ export mountain = new class extends Room
         @take_pot = true
         take "Pot"
         if @take_chair
-          say paragraph "You put the pot on your head and pick up the chair."
+          say paragraph "You put the pot on your head and pocket the silverware and pick up the chair again with your hands."
         else
-          say paragraph "You pick up the pot with your hand."
+          say paragraph "You pick up the pot with your hand and pocket the silverware."
         if @take_pot and @take_chair and @take_bottles
           await scene @angry_mountaineer
       "Take bottle": if not @take_bottles then =>
