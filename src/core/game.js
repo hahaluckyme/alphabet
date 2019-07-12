@@ -32,12 +32,14 @@ export async function playScene(scene_name) {
   }
 }
 
-export async function goTo(location_name) {
+export async function goTo(location) {
   data.flush(true);
-  const location = data[location_name];
+  if (typeof location === 'string') {
+    location = data[location];
+  }
   cur_location = location;
-  if (location.enter) {
-    await location.enter();
+  if (location.Enter) {
+    await location.Enter();
     data.flush(true);
     if (location.choices) {
       setChoices(location.choices);

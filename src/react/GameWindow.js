@@ -19,7 +19,7 @@ class GameWindow extends React.Component {
     document.title = 'Alpha';
     this.scrollRef.scrollTop = 0;
     game.hook(this);
-    game.goTo('nowhere');
+    game.goTo('Nowhere');
   }
 
   componentDidUpdate() {

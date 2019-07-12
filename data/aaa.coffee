@@ -68,9 +68,9 @@ class Character extends Entity
   @set location: (target) => await game.goTo target
     
 
-export player = new class extends Character
+export Player = new class extends Character
   inventory: []
-take = (...elems) => player.inventory.push ...elems
+take = (...elems) => Player.inventory.push ...elems
 
 class NPC extends Character
 class Room extends Entity

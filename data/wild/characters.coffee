@@ -1,10 +1,8 @@
 export Logan = new class extends NPC
-  writer: ["hahaluckyme", "Song"]
-  name: "Logan"
   sex: "male"
   met: false
 
-  introduce: =>
+  Introduce: =>
     @met = true
 
     say paragraph "You wait a bit at the campsite. A short while later, you stare in disbelief as a wolf man walks toward you. He looks just as surprised as you are. \"Hey, you!\" he shouts quickly drawing closer. \"What are you doing here? You better not be stealing anything!\""

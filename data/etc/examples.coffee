@@ -1,3 +1,39 @@
+# example NPC
+export ExampleNPC = new class extends NPC
+  sex: "male"
+
+  # example property
+  met: false
+
+  # example scene
+  talk: =>
+    @met = true
+    say paragraph "\"Hail! Good to meet you.\""
+
+
+# example Room
+export ExampleRoom = new class extends Room
+  discovered: false
+
+  enter: =>
+    if not @discovered
+      @discovered = true
+      say paragraph "You see the Example Room for the first time."
+    else
+      await scene @look
+
+  look: =>
+    say paragraph "It's an Example Room."
+
+  choices: =>
+    "Look": =>
+      await scene @look
+    north: =>
+      say paragraph "You go north."
+      await Player.location = ExampleRoom
+
+
+# comments
 export slut_fuck = =>
   say paragraph "Welcome, #{if player.sex is "female" then "slut" else "bud"}. Wanna fuck?"
 
@@ -8,7 +44,8 @@ export slut_fuck = =>
     "No": =>
       say paragraph "No? Nobody says no to me. Get out of my face."
 
-have_sex = =>
+
+export have_sex = =>
   switch player.sex
     when "female"
       say paragraph "All right let's fuck!"
@@ -21,7 +58,7 @@ have_sex = =>
       say paragraph "No cunt? Well at least you got an asshole."
 
 
-player_genitals = =>
+export player_genitals = =>
   switch player.sex
     when "male"
       say "cock"
@@ -29,7 +66,7 @@ player_genitals = =>
       say "cunt"
 
 
-intro2 = =>
+export intro2 = =>
   player.name = "Lucky"
 
   if not dom.met
@@ -42,7 +79,7 @@ intro2 = =>
       3: => say paragraph "What's up?"
 
 
-intro3 = =>
+export intro3 = =>
   say paragraph "This is paragraph one."
   say "Sentence two?"
   say "Wow!"
@@ -52,7 +89,7 @@ intro3 = =>
   say paragraph speech "Hello! This is dialogue."
 
 
-intro4 = =>
+export intro4 = =>
   roll20 =>
     1: =>
       say paragraph "You did shit"
@@ -65,13 +102,14 @@ intro4 = =>
     20: =>
       say paragraph "You did godly"
 
-intro5 = =>
+
+export intro5 = =>
   say paragraph "That house is #{oneof "red", "blue"}."
 
 
-intro6 = =>
+export intro6 = =>
   say paragraph "You see a vulnerable female husky sleeping."
-  
+
   add player.traits, "Sadist"
 
   await choice =>
