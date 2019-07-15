@@ -1,40 +1,48 @@
-# example NPC
-export ExampleNPC = new class extends NPC
-  sex: "male"
+# ExampleNPC
+export ExampleLucky = new class extends NPC
+  sex: "female"
 
-  # example property
+  # example_property
   met: false
 
-  # example scene
-  talk: =>
+  # ExampleScene
+  Introduce: =>
+    # set some variables
     @met = true
-    say paragraph "\"Hail! Good to meet you.\""
+    say paragraph "The catgirl looks at you and smiles. \"Hi! Welcome to my game.\""
 
 
-# example Room
-export ExampleRoom = new class extends Room
+# ExampleRoom
+export ExampleAbandonedHouse = new class extends Room
+  # example_property
   discovered: false
 
-  enter: =>
+  # the Enter scene will be autoplayed when entering a room
+  Enter: =>
     if not @discovered
       @discovered = true
-      say paragraph "You see the Example Room for the first time."
+      say paragraph "You are in an abandoned house. It is old."
     else
-      await scene @look
+      await scene @Look
 
-  look: =>
+  # ExampleScene
+  Look: =>
     say paragraph "It's an Example Room."
 
+  # choices will list these as the options for this room if the player is in it
   choices: =>
+    # "Label" will show as a button the player can choose
     "Look": =>
-      await scene @look
+      await scene @Look
+    # north, south, east, west, up, down
     north: =>
-      say paragraph "You go north."
+      say paragraph "You go north, but suddenly, you blink and realize you've teleported back to the same room you were just in."
+      # normally you'd go to another room
       await Player.location = ExampleRoom
 
 
-# comments
-export slut_fuck = =>
+# ExampleScene
+export ExampleFuck = =>
   say paragraph "Welcome, #{if player.sex is "female" then "slut" else "bud"}. Wanna fuck?"
 
   await choice =>
@@ -44,8 +52,10 @@ export slut_fuck = =>
     "No": =>
       say paragraph "No? Nobody says no to me. Get out of my face."
 
+  say paragraph "They spit on the floor."
 
-export have_sex = =>
+
+export ExampleHaveSex = =>
   switch player.sex
     when "female"
       say paragraph "All right let's fuck!"
@@ -58,7 +68,7 @@ export have_sex = =>
       say paragraph "No cunt? Well at least you got an asshole."
 
 
-export player_genitals = =>
+export ExamplePlayerGenitals = =>
   switch player.sex
     when "male"
       say "cock"
@@ -66,20 +76,14 @@ export player_genitals = =>
       say "cunt"
 
 
-export intro2 = =>
-  player.name = "Lucky"
-
-  if not dom.met
-    dom.met = true
-    say paragraph "Hi I haven't met you before. Your name is #{player.name}? Nice to meet you."
-  else
-    oneof =>
-      1: => say paragraph "Good to see you again, #{player.name}."
-      2: => say paragraph "How's it going?"
-      3: => say paragraph "What's up?"
+export ExampleOneOf = =>
+  oneof =>
+    1: => say paragraph "Good to see you again, #{player.name}."
+    2: => say paragraph "How's it going?"
+    3: => say paragraph "What's up?"
 
 
-export intro3 = =>
+export ExampleSentenceBuilding = =>
   say paragraph "This is paragraph one."
   say "Sentence two?"
   say "Wow!"
@@ -89,7 +93,8 @@ export intro3 = =>
   say paragraph speech "Hello! This is dialogue."
 
 
-export intro4 = =>
+export ExampleDifficultyRoll = =>
+  # if you roll lower than all of the options, it will auto-choose the lowest number here
   roll20 =>
     1: =>
       say paragraph "You did shit"
@@ -103,22 +108,5 @@ export intro4 = =>
       say paragraph "You did godly"
 
 
-export intro5 = =>
+export ExampleOneOfInString = =>
   say paragraph "That house is #{oneof "red", "blue"}."
-
-
-export intro6 = =>
-  say paragraph "You see a vulnerable female husky sleeping."
-
-  add player.traits, "Sadist"
-
-  await choice =>
-    "Rape is good":
-      requirements: => "Sadist" in player.traits
-      outcome: =>
-        say paragraph "I win"
-        await say sex_with_dom
-    "Walk away": =>
-      say paragraph "No? Nobody says no to me."
-
-  say paragraph "You made a choice!"

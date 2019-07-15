@@ -1,13 +1,13 @@
-export CaveInside = new class extends Room
+export ObservatoryInside = new class extends Room
   discovered: false
   scavenged: false
 
   Enter: =>
     if not @discovered
       @discovered = true
-      say paragraph "You wake up in a cave. There's bright light shining from to the north, where you could leave."
+      say paragraph "You wake up in a dark room. There's bright light shining from to the north, where you could leave."
     else
-      say paragraph "It's the cave you woke up in. There's an exit to the north."
+      say paragraph "It's the room you woke up in. There's an exit to the north."
 
   Scavenge: =>
     @scavenged = true
@@ -18,11 +18,11 @@ export CaveInside = new class extends Room
     "Scavenge": if not @scavenged then =>
       await scene @Scavenge
     north: =>
-      say paragraph "You leave the dusty cave."
-      await Player.location = CaveOutside
+      say paragraph "You leave the dusty room."
+      await Player.location = ObservatoryOutside
 
 
-export CaveOutside = new class extends Room
+export ObservatoryOutside = new class extends Room
   discovered: false
 
   Enter: =>
@@ -32,5 +32,5 @@ export CaveOutside = new class extends Room
     say paragraph "It's very cold out here. You're in some kind of forested area, and judging from your viewpoint, you appear to be at high elevation."
 
   choices: =>
-    south: => await Player.location = CaveInside
-    north: => await Player.location = MountainCampsiteEmpty
+    south: => await Player.location = ObservatoryInside
+    north: => await Player.location = CampsiteEmpty
