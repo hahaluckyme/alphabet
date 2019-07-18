@@ -2,7 +2,7 @@
   "name": "alpha",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://forced.tf",
+  "homepage": "https://forced.tf",
   "dependencies": {
     "@babel/core": "7.1.6",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
