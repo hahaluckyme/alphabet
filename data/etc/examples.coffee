@@ -30,12 +30,12 @@ export ExampleAbandonedHouse = new class extends Room
     say paragraph "It's an Example Room."
 
   # choices will list these as the options for this room if the player is in it
-  choices: =>
+  Choices: =>
     # "Label" will show as a button the player can choose
     "Look": =>
       await scene @Look
     # north, south, east, west, up, down
-    north: =>
+    North: =>
       say paragraph "You go north, but suddenly, you blink and realize you've teleported back to the same room you were just in."
       # normally you'd go to another room
       await Player.location = ExampleRoom

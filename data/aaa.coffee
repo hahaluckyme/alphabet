@@ -1,5 +1,4 @@
 buffers = []
-choices = {}
 stdout = ''
 
 game = require('game');
@@ -50,6 +49,10 @@ paragraph = (inner) =>
 add = (object, ...additions) =>
   object.push(...additions)
 
+end = =>
+  await Player.location = Nowhere
+  say paragraph "The end."
+
 class Entity
   @get: (props) =>
     for prop, func of props
@@ -66,7 +69,7 @@ class Character extends Entity
   @get has_cock: => @sex is 'male'
   @get has_cunt: => @sex is 'female'
   @set location: (target) => await game.goTo target
-    
+
 
 export Player = new class extends Character
   inventory: []

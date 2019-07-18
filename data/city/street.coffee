@@ -1,18 +1,18 @@
 export CityStreet = new class extends Room
   discovered: false
 
-  enter: =>
+  Enter: =>
     if not @discovered
       @discovered = true
       say paragraph "You see the city street for the first time."
     else
-      await scene @look
+      await scene @Look
 
-  look: =>
+  Look: =>
     say paragraph "It's a city street."
 
-  choices: =>
+  Choices: =>
     "Look": =>
-      await scene @look
-    north: =>
+      await scene @Look
+    North: =>
       say paragraph "You go north."

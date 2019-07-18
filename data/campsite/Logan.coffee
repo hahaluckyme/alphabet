@@ -44,3 +44,5 @@ export Logan = new class extends NPC
         say paragraph "\"Well, you'll believe me soon enough!\" he laughs. \"Sorry to break the news to you!\""
 
     say paragraph "... to be continued"
+
+    await Player.location = CampsiteLogan
