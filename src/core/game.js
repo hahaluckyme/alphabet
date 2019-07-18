@@ -9,7 +9,12 @@ let cur_resolves = [];
 // functions to the game engine
 export async function playScene(scene_name) {
   component.print(<span>> {scene_name}{'\n'}</span>);
-  const choices = cur_location.choices ? cur_location.choices() : [];
+  let choices = cur_location.Choices || [];
+
+  if (typeof cur_location.Choices === 'function') {
+    choices = choices();
+  }
+
   const choice_labels = Object.keys(choices);
   let scene;
   if (cur_choices[scene_name]) {
@@ -27,7 +32,7 @@ export async function playScene(scene_name) {
     cur_resolve();
   } else {
     if (Object.keys(cur_choices).length === 0) {
-      setChoices(cur_location.choices);
+      setChoices(cur_location.Choices);
     }
   }
 }
@@ -41,8 +46,8 @@ export async function goTo(location) {
   if (location.Enter) {
     await location.Enter();
     data.flush(true);
-    if (location.choices) {
-      setChoices(location.choices);
+    if (location.Choices) {
+      setChoices(location.Choices);
     }
   }
 }
@@ -52,9 +57,9 @@ export function hook(comp) {
   component = comp;
 }
 
-export function setChoices(raw_choices, resolve) {
+export async function setChoices(raw_choices, resolve) {
   if (typeof raw_choices === 'function') {
-    raw_choices = raw_choices()
+    raw_choices = raw_choices();
   }
 
   const choices = {};
@@ -67,7 +72,7 @@ export function setChoices(raw_choices, resolve) {
       continue;
     }
 
-    if (['down', 'north', 'up', 'west', 'south', 'east'].includes(raw_choice)) {
+    if (['Down', 'North', 'Up', 'West', 'South', 'East'].includes(raw_choice)) {
       directions[raw_choice] = raw_choice;
     } else {
       choices[raw_choice] = raw_choice;
@@ -77,7 +82,10 @@ export function setChoices(raw_choices, resolve) {
   if (resolve) {
     cur_resolves.push(resolve);
   }
-  component.setState({choices, directions});
+  await component.setState({choices, directions});
+  if (raw_choices == null || Object.keys(raw_choices).length > 0) {
+    component.scrollDown();
+  }
 }
 
 export function print(string) {

@@ -6,34 +6,38 @@ const GameButton = require('./GameButton').default;
 class GameWindow extends React.Component {
   state = {
     button_depressions: {},
+    history_seen: 0,
     history: [],
     choices: [],
     directions: {},
     cur_scene: '',
     cur_room: '',
+    is_at_bottom: true,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('keyup', this.onKeyUp.bind(this));
-    document.title = 'Alpha';
-    this.scrollRef.scrollTop = 0;
+    document.title = 'Shifted Fates (Alpha)';
     game.hook(this);
-    game.goTo('Nowhere');
+    await game.goTo('IntroRoom');
+    this.scrollRef.scrollTop = 0;
   }
 
   componentDidUpdate() {
-    this.scrollRef.scrollTop = this.scrollRef.scrollHeight;
+  }
+
+  scrollDown() {
+    this.scrollRef.scrollTop += this.scrollRef.clientHeight;
   }
 
   print(node) {
     this.state.history.push(node);
     this.forceUpdate();
-    this.scrollRef.scrollTop = this.scrollRef.scrollHeight;
   }
 
-  onKeyDownImpl(hotkey) {
-    this.setState(prev_state => ({
+  async onKeyDownImpl(hotkey) {
+    await this.setState(prev_state => ({
       button_depressions: {
         ...prev_state.button_depressions,
         [hotkey]: true,
@@ -42,12 +46,14 @@ class GameWindow extends React.Component {
     const label_map = this.getLabelMap();
     const scene = label_map[hotkey];
     if (scene) {
+      this.scrollRef.scrollTop = this.scrollRef.scrollHeight;
+      this.setState(prevState => ({history_seen: prevState.history.length}));
       game.playScene(scene);
     }
   }
 
-  onKeyUpImpl(hotkey) {
-    this.setState(prev_state => ({
+  async onKeyUpImpl(hotkey) {
+    await this.setState(prev_state => ({
       button_depressions: {
         ...prev_state.button_depressions,
         [hotkey]: undefined,
@@ -77,15 +83,15 @@ class GameWindow extends React.Component {
       '4': choice_labels[3],
       '5': choice_labels[4],
 
-      'q': directions.down,
-      'w': directions.north,
-      'e': directions.up,
+      'q': directions.Down,
+      'w': directions.North,
+      'e': directions.Up,
       'r': choice_labels[5],
       't': choice_labels[6],
 
-      'a': directions.west,
-      's': directions.south,
-      'd': directions.east,
+      'a': directions.West,
+      's': directions.South,
+      'd': directions.East,
       'f': choice_labels[7],
       'g': choice_labels[8],
     };
@@ -101,9 +107,9 @@ class GameWindow extends React.Component {
           depressed={button_depressions[props.hotkey]}
           hotkey={props.hotkey}
           label={label_map[props.hotkey]}
-          onClick={() => {
-            this.onKeyDownImpl(props.hotkey);
-            this.onKeyUpImpl(props.hotkey);
+          onClick={async () => {
+            await this.onKeyDownImpl(props.hotkey);
+            await this.onKeyUpImpl(props.hotkey);
           }}
         />
       );
@@ -119,13 +125,28 @@ class GameWindow extends React.Component {
           <div className="minimap">minimap</div>
         </div> */}
         <div className="main fill column">
-          <div
-            className="textbox fill column scroll"
-            ref={ref => {this.scrollRef = ref;}}
-          >
-            <div className="fill column">
-              {this.state.history.map((e, i) => <div key={i}>{e}</div>)}
+          <div className="gamewindow fill column">
+            <div
+              className="textbox fill column scroll"
+              onScroll={() => this.setState({
+                is_at_bottom: this.scrollRef.scrollHeight - this.scrollRef.scrollTop - this.scrollRef.clientHeight < 1,
+              })}
+              ref={ref => {
+                this.scrollRef = ref;
+              }}
+            >
+              <div className="fill column">
+                {this.state.history.map((e, i) =>
+                  <div className={'text ' + (i < this.state.history_seen ? 'seen' : 'unseen')} key={i}>{e}</div>,
+                )}
+              </div>
             </div>
+            <div
+              className="butwaittheresmore"
+              style={{
+                visibility: this.state.is_at_bottom ? 'hidden' : 'visible',
+              }}
+            />
           </div>
           <div className="buttons column">
             <div className="row">
