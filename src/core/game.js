@@ -1,5 +1,16 @@
 const data = require('data');
+for (const key of Object.keys(data)) {
+  for (const scene of Object.keys(data[key])) {
+    data[key][scene].room = key;
+    data[key][scene].id = scene;
+  }
+  data[key].id = key;
+}
+
 const React = require('react');
+const ReactGA = require('react-ga').default;
+ReactGA.initialize('UA-143865453-2');
+// ReactGA.pageview('/');
 
 let component = null;
 let cur_location = null;
@@ -8,6 +19,16 @@ let cur_resolves = [];
 
 // functions to the game engine
 export async function playScene(scene_name) {
+  if (typeof scene_name === 'function') {
+    ReactGA.event({
+      category: 'scene',
+      action: scene_name.room || 'global',
+      label: scene_name.id,
+    });
+    scene_name();
+    return;
+  }
+
   component.print(<span>> {scene_name}{'\n'}</span>);
   let choices = cur_location.Choices || [];
 
@@ -17,14 +38,13 @@ export async function playScene(scene_name) {
 
   const choice_labels = Object.keys(choices);
   let scene;
-  if (cur_choices[scene_name]) {
-    scene = cur_choices[scene_name];
-  } else if (choice_labels.includes(scene_name)) {
-    scene = choices[scene_name];
-  } else {
-    scene = data[scene_name];
-  }
+  scene = cur_choices[scene_name];
   setChoices({});
+  ReactGA.event({
+    category: 'scene',
+    action: cur_location.id,
+    label: scene_name,
+  });
   await scene();
   data.flush(true);
   if (cur_resolves.length > 0) {

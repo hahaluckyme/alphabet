@@ -1,5 +1,8 @@
 export IntroRoom = new class extends Room
   Enter: =>
+    await scene @Introo
+
+  Introo: =>
     await scene IntroScene
 
 export Nowhere = new class extends Room

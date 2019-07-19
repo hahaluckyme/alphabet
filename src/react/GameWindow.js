@@ -61,9 +61,22 @@ class GameWindow extends React.Component {
     }));
   }
 
-  onKeyDown(event) {
-    if (!event.ctrlKey && '12345qwertasdfg'.includes(event.key)) {
-      this.onKeyDownImpl(event.key);
+  async onKeyDown(event) {
+    if (!event.ctrlKey) {
+      if ('12345qwertasdfg'.includes(event.key)) {
+        await this.onKeyDownImpl(event.key);
+      } else if (event.key === ' ') {
+        if (
+          Object.keys(this.state.choices).length === 1
+          && Object.keys(this.state.directions).length === 0
+          && Object.keys(this.state.choices)[0] === '...'
+          && this.scrollRef.scrollHeight - this.scrollRef.scrollTop - this.scrollRef.clientHeight < 1
+        ) {
+          await this.onKeyDownImpl('1');
+          await this.onKeyUpImpl('1');
+          event.preventDefault();
+        }
+      }
     }
   }
 
@@ -136,9 +149,13 @@ class GameWindow extends React.Component {
               }}
             >
               <div className="fill column">
-                {this.state.history.map((e, i) =>
-                  <div className={'text ' + (i < this.state.history_seen ? 'seen' : 'unseen')} key={i}>{e}</div>,
-                )}
+                {this.state.history.map((e, i) => {
+                  if (i < this.state.history_seen) {
+                    return <div className="text seen" key={i}>{e}</div>;
+                  } else {
+                    return <div className="text unseen" key={i}>{e}</div>;
+                  }
+                })}
               </div>
             </div>
             <div

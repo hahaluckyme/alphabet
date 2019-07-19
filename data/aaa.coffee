@@ -38,7 +38,7 @@ say = (inner) =>
       buffers[buffers.length-1] += inner
 
 scene = (inner) =>
-  await inner()
+  game.playScene inner
 
 speech = (inner) =>
   return '"' + inner + '"'
