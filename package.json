@@ -75,8 +75,7 @@
     "serve": "node scripts/start.js",
     "build": "npm run compile && node scripts/build.js",
     "test": "node scripts/test.js",
-    "predeploy": "npm run build",
-    "forget": "rm -rf ./node_modules/.cache/babel-loader/*",
+    "predeploy": "npm version patch --force && npm run build",
     "deploy": "git push && gh-pages -d build",
     "compile": "find data/ -name \"*.coffee\" | xargs cat | coffee -c --stdio > src/data_tmp.js && mv src/data_tmp.js src/data.js",
     "compile-watch": "nodemon --watch data -e coffee --exec \"npm run compile\""

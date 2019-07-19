@@ -10,7 +10,7 @@ for (const key of Object.keys(data)) {
 const React = require('react');
 const ReactGA = require('react-ga').default;
 ReactGA.initialize('UA-143865453-2');
-// ReactGA.pageview('/');
+ReactGA.pageview('/');
 
 let component = null;
 let cur_location = null;
