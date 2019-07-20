@@ -95,12 +95,12 @@ body {
 }
 
 @-webkit-keyframes yellow-fade {
-  0% {background: rgb(255, 255, 255, 0.35);}
+  0% {background: rgb(255, 255, 255, 0.10);}
   100% {background: none;}
 }
 
 @keyframes yellow-fade {
-  0% {background: rgb(255, 255, 255, 0.35);}
+  0% {background: rgb(255, 255, 255, 0.10);}
   100% {background: none;}
 }
 
