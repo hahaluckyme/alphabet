@@ -77,8 +77,7 @@
     "test": "node scripts/test.js",
     "prepush": "git status && git diff --quiet HEAD",
     "push": "git push --recurse-submodules=check",
-    "predeploy": "git status && git diff --quiet HEAD && git submodule foreach git pull",
-    "deploy": "npm version patch && npm run push && npm run build && gh-pages -d build",
+    "deploy": "npm run build && npm version patch --force && gh-pages -d build",
     "compile": "find data/ -name \"*.coffee\" | xargs cat | coffee -c --stdio > src/data_tmp.js && mv src/data_tmp.js src/data.js",
     "compile-watch": "nodemon --watch data -e coffee --exec \"npm run compile\""
   },
