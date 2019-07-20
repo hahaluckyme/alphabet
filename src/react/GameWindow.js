@@ -18,7 +18,6 @@ class GameWindow extends React.Component {
   async componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('keyup', this.onKeyUp.bind(this));
-    document.title = 'Shifted Fates (Alpha)';
     game.hook(this);
     await game.goTo('IntroRoom');
     this.scrollRef.scrollTop = 0;

@@ -11,7 +11,6 @@ const {
 
 class App extends React.Component {
   async componentDidMount() {
-    document.title = 'Alpha';
   }
 
   render() {
