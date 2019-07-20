@@ -10,7 +10,7 @@ https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-p
 
 Click `Clone Repository`.
 
-Click `URL` and type `https://github.com/hahaluckyme/alpha`
+Click `URL` and type `https://github.com/hahaluckyme/alphabet`
 
 4. Install Node JS, version `Recommended For Most Users`
 https://nodejs.org/en/
