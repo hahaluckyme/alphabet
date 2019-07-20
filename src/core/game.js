@@ -1,3 +1,10 @@
+const ReactGA = require('react-ga').default;
+if (process.env.NODE_ENV === 'production') {
+  ReactGA.initialize('UA-143865453-3');
+} else {
+  ReactGA.initialize('UA-143865453-2');
+}
+
 const data = require('data');
 for (const key of Object.keys(data)) {
   for (const scene of Object.keys(data[key])) {
@@ -8,9 +15,6 @@ for (const key of Object.keys(data)) {
 }
 
 const React = require('react');
-const ReactGA = require('react-ga').default;
-ReactGA.initialize('UA-143865453-2');
-ReactGA.pageview('/');
 
 let component = null;
 let cur_location = null;
@@ -25,7 +29,7 @@ export async function playScene(scene_name) {
       action: scene_name.room || 'global',
       label: scene_name.id,
     });
-    scene_name();
+    await scene_name();
     return;
   }
 
@@ -49,7 +53,7 @@ export async function playScene(scene_name) {
   data.flush(true);
   if (cur_resolves.length > 0) {
     const cur_resolve = cur_resolves.pop();
-    cur_resolve();
+    await cur_resolve();
   } else {
     if (Object.keys(cur_choices).length === 0) {
       setChoices(cur_location.Choices);
@@ -75,6 +79,7 @@ export async function goTo(location) {
 // functions back to the renderer
 export function hook(comp) {
   component = comp;
+  ReactGA.pageview(window.location.pathname + window.location.search);
 }
 
 export async function setChoices(raw_choices, resolve) {
