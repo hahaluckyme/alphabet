@@ -3,6 +3,7 @@
 # data and built files
 src/data.js
 data/*
+!data/README.md
 
 # dependencies
 /node_modules
