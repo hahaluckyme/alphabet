@@ -75,9 +75,10 @@
     "serve": "node scripts/serve.js",
     "build": "npm run compile && node scripts/build.js",
     "test": "node scripts/test.js",
+    "setup": "cd data && git init && git remote add origin https://github.com/hahaluckyme/shifted-fates && git fetch && git checkout -t origin/master",
     "prepush": "git status && git diff --quiet HEAD",
     "push": "git push --recurse-submodules=check",
-    "deploy": "npm run build && npm version patch --force && cd data/shifted-fates && gh-pages -d build",
+    "deploy": "npm run build && npm version patch --force && cd data && gh-pages -d ../build",
     "compile": "find data/ -name \"*.coffee\" | xargs cat | coffee -c --stdio > src/data_tmp.js && mv src/data_tmp.js src/data.js",
     "compile-watch": "nodemon --watch data -e coffee --exec \"npm run compile\""
   },
