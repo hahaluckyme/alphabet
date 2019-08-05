@@ -33,7 +33,7 @@ function GameButton(props) {
     return (
       <button
         className={className}
-        onClick={props.onClick}
+        onClick={() => props.onClick(props.scene)}
       >
         {props.label}
       </button>

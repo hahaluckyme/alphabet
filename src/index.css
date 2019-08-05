@@ -1,21 +1,27 @@
 body {
-  margin: 0;
-  padding: 0;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-color: #222222;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #222222;
+  margin: 0;
+  padding: 0;
+}
+
+#react {
+  width: 100%;
+  height: 100%;
 }
 
 .root {
+  color: ivory;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   margin: auto;
   max-width: 1280px;
-  height: 100vh;
-  width: 100vw;
   overflow: hidden;
-  color: ivory;
+  width: 100vw;
 }
 
 .column {
@@ -53,6 +59,7 @@ body {
 
 .scroll {
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .sidebar {

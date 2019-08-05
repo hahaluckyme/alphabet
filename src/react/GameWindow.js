@@ -1,38 +1,95 @@
-const game = require('game');
+const ReactGA = require('react-ga').default;
+if (process.env.NODE_ENV === 'production') {
+  ReactGA.initialize('UA-143865453-3');
+} else {
+  ReactGA.initialize('UA-143865453-2');
+}
+
 const React = require('react');
 
 const GameButton = require('./GameButton').default;
+const ScrollBox = require('./ScrollBox').default;
+const data = require('data-loader').default;
 
 class GameWindow extends React.Component {
   state = {
     button_depressions: {},
-    history_seen: 0,
+    prev_history_seen: 0,
+    history_seen: -1,
     history: [],
     choices: [],
     directions: {},
-    cur_scene: '',
-    cur_room: '',
+    cur_room: null,
+    cur_choices: {},
+    cur_resolve: null,
     is_at_bottom: true,
   };
 
   async componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('keyup', this.onKeyUp.bind(this));
-    game.hook(this);
-    await game.goTo('IntroRoom');
-    this.scrollRef.scrollTop = 0;
+    ReactGA.pageview(window.location.pathname + window.location.search);
+    data.hook(this);
+    this.loadScene('IntroScene');
   }
 
-  componentDidUpdate() {
+  async loadScene(scene_name) {
+    this.playScene(data[scene_name]);
   }
 
-  scrollDown() {
-    this.scrollRef.scrollTop += this.scrollRef.clientHeight;
+  async goTo(room) {
+    await this.setState({
+      cur_room: room,
+    });
+    await this.playScene(room.Enter);
+    await this.playScene(room.Choices);
   }
 
-  print(node) {
-    this.state.history.push(node);
-    this.forceUpdate();
+  async playScene(scene_func) {
+    ReactGA.event({
+      category: 'scene',
+      action: scene_func.parent_id || 'global',
+      label: scene_func.id,
+    });
+    await scene_func();
+  }
+
+  end() {
+    this.setState(prevState => ({
+      history_seen: prevState.prev_history_seen,
+    }));
+  }
+
+  async showChoices(choices_func, cur_resolve) {
+    await this.setState(prevState => ({
+      history_seen: prevState.prev_history_seen,
+    }));
+    const choices = await choices_func();
+    await this.setState({
+      cur_choices: choices,
+      cur_resolve: cur_resolve,
+    });
+  }
+
+  async pickChoice(choice_name) {
+    await this.setState(prevState => ({
+      prev_history_seen: prevState.history.length,
+    }));
+    await this.print(`> ${choice_name}`);
+    const temp_resolve = this.state.cur_resolve;
+    const sub_scene = this.state.cur_choices[choice_name];
+    await this.setState({
+      cur_choices: {},
+    });
+
+    await this.playScene(sub_scene);
+    temp_resolve();
+  }
+
+  async print(node) {
+    await this.setState(prevState => ({
+      history: prevState.history.concat([node]),
+    }));
   }
 
   async onKeyDownImpl(hotkey) {
@@ -43,12 +100,8 @@ class GameWindow extends React.Component {
       },
     }));
     const label_map = this.getLabelMap();
-    const scene = label_map[hotkey];
-    if (scene) {
-      this.scrollRef.scrollTop = this.scrollRef.scrollHeight;
-      this.setState(prevState => ({history_seen: prevState.history.length}));
-      game.playScene(scene);
-    }
+    const label = label_map[hotkey];
+    await this.pickChoice(label);
   }
 
   async onKeyUpImpl(hotkey) {
@@ -69,7 +122,6 @@ class GameWindow extends React.Component {
           Object.keys(this.state.choices).length === 1
           && Object.keys(this.state.directions).length === 0
           && Object.keys(this.state.choices)[0] === '...'
-          && this.scrollRef.scrollHeight - this.scrollRef.scrollTop - this.scrollRef.clientHeight < 1
         ) {
           await this.onKeyDownImpl('1');
           await this.onKeyUpImpl('1');
@@ -86,8 +138,10 @@ class GameWindow extends React.Component {
   }
 
   getLabelMap() {
-    const {choices, directions} = this.state;
-    const choice_labels = Object.keys(choices);
+    const {cur_choices} = this.state;
+    const choice_labels = Object.keys(cur_choices).filter(
+      e => !['Down', 'West', 'Up', 'West', 'South', 'East'].includes(e),
+    );
     return {
       '1': choice_labels[0],
       '2': choice_labels[1],
@@ -95,15 +149,15 @@ class GameWindow extends React.Component {
       '4': choice_labels[3],
       '5': choice_labels[4],
 
-      'q': directions.Down,
-      'w': directions.North,
-      'e': directions.Up,
+      'q': cur_choices.Down && 'Down',
+      'w': cur_choices.West && 'West',
+      'e': cur_choices.Up && 'Up',
       'r': choice_labels[5],
       't': choice_labels[6],
 
-      'a': directions.West,
-      's': directions.South,
-      'd': directions.East,
+      'a': cur_choices.West && 'West',
+      's': cur_choices.South && 'South',
+      'd': cur_choices.East && 'East',
       'f': choice_labels[7],
       'g': choice_labels[8],
     };
@@ -114,11 +168,13 @@ class GameWindow extends React.Component {
     const label_map = this.getLabelMap();
 
     const LinkedGameButton = (props) => {
+      const label = label_map[props.hotkey];
       return (
         <GameButton
           depressed={button_depressions[props.hotkey]}
           hotkey={props.hotkey}
-          label={label_map[props.hotkey]}
+          scene={this.state.cur_choices[label]}
+          label={label}
           onClick={async () => {
             await this.onKeyDownImpl(props.hotkey);
             await this.onKeyUpImpl(props.hotkey);
@@ -137,33 +193,10 @@ class GameWindow extends React.Component {
           <div className="minimap">minimap</div>
         </div> */}
         <div className="main fill column">
-          <div className="gamewindow fill column">
-            <div
-              className="textbox fill column scroll"
-              onScroll={() => this.setState({
-                is_at_bottom: this.scrollRef.scrollHeight - this.scrollRef.scrollTop - this.scrollRef.clientHeight < 1,
-              })}
-              ref={ref => {
-                this.scrollRef = ref;
-              }}
-            >
-              <div className="fill column">
-                {this.state.history.map((e, i) => {
-                  if (i < this.state.history_seen) {
-                    return <div className="text seen" key={i}>{e}</div>;
-                  } else {
-                    return <div className="text unseen" key={i}>{e}</div>;
-                  }
-                })}
-              </div>
-            </div>
-            <div
-              className="butwaittheresmore"
-              style={{
-                visibility: this.state.is_at_bottom ? 'hidden' : 'visible',
-              }}
-            />
-          </div>
+          <ScrollBox
+            history={this.state.history}
+            seen={this.state.history_seen}
+          />
           <div className="buttons column">
             <div className="row">
               <LinkedGameButton hotkey='1' />
