@@ -5,7 +5,7 @@ class ScrollBox extends React.Component {
 
   state = {
     prevHeight: 0,
-    is_at_bottom: false,
+    is_at_bottom: true,
   };
 
   componentDidMount() {
