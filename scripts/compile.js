@@ -9,9 +9,9 @@ const fs = require('fs');
   const temp_file = fs.createWriteStream('src/_compiled.coffee');
 
   for (const filepath of filepaths) {
-    const match = filepath.match(/([^/]+?)(Scene|NPC|Scenario|Room|).coffee$/);
+    const match = filepath.match(/([^/]+?)(|-(NPC|Scenario|Room|Scene)).coffee$/);
     const filename = match[1];
-    const type = match[2];
+    const type = match[3];
 
     switch (type) {
       case 'NPC':
@@ -28,7 +28,7 @@ const fs = require('fs');
         temp_file.write('  ' + a.trim().replace(/\n/g, '\n  ') + '\n\n');
         break;
       }
-      case '': {
+      case undefined: {
         const a = fs.readFileSync(filepath, 'utf8');
         temp_file.write(a + '\n\n');
         break;
