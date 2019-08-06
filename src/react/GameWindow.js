@@ -65,7 +65,6 @@ class GameWindow extends React.Component {
   }
 
   async showChoices(choices, cur_resolve) {
-    console.log(choices);
     await this.setState(prevState => ({
       history_seen: prevState.prev_history_seen,
     }));
@@ -106,7 +105,7 @@ class GameWindow extends React.Component {
     const label_map = this.getLabelMap();
     const label = label_map[hotkey];
     if (label) {
-      await this.pickChoice(label);
+      this.pickChoice(label);
     }
   }
 
