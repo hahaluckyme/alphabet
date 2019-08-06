@@ -22,7 +22,7 @@ class ScrollBox extends React.Component {
     if (prevProps.seen !== this.props.seen) {
       this.scrollRef.scrollTop = this.state.prevHeight;
       this.setState({
-        prevHeight: this.scrollRef.scrollHeight,
+        prevHeight: this.contentRef.offsetHeight,
       });
     }
     if (prevProps.history.length !== this.props.history.length) {
@@ -41,12 +41,15 @@ class ScrollBox extends React.Component {
           className="textbox fill column scroll"
           onScroll={() => this.onScroll()}
           ref={ref => {
-            if (ref != null) {
-              this.scrollRef = ref;
-            }
+            this.scrollRef = ref;
           }}
         >
-          <div className="fill column">
+          <div
+            className="fill column"
+            ref={ref => {
+              this.contentRef = ref;
+            }}
+          >
             {this.props.history.map((e, i) => {
               if (i < this.props.seen) {
                 return <div className="text seen" key={i}>{e}</div>;
