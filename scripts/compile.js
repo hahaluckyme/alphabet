@@ -9,7 +9,7 @@ const fs = require('fs');
   const temp_file = fs.createWriteStream('src/_compiled.coffee');
 
   for (const filepath of filepaths) {
-    const match = filepath.match(/([^/]+?)(NPC|Scenario|Room|).coffee$/);
+    const match = filepath.match(/([^/]+?)(Scene|NPC|Scenario|Room|).coffee$/);
     const filename = match[1];
     const type = match[2];
 
@@ -18,6 +18,12 @@ const fs = require('fs');
       case 'Scenario':
       case 'Room': {
         temp_file.write(`export ${filename} = new class extends ${type}\n`);
+        const a = fs.readFileSync(filepath, 'utf8');
+        temp_file.write('  ' + a.trim().replace(/\n/g, '\n  ') + '\n\n');
+        break;
+      }
+      case 'Scene': {
+        temp_file.write(`export ${filename}Scene = =>\n`);
         const a = fs.readFileSync(filepath, 'utf8');
         temp_file.write('  ' + a.trim().replace(/\n/g, '\n  ') + '\n\n');
         break;
