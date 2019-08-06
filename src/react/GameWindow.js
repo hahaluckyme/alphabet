@@ -31,7 +31,7 @@ class GameWindow extends React.Component {
     document.addEventListener('keyup', this.onKeyUp.bind(this));
     ReactGA.pageview(window.location.pathname + window.location.search);
     data.hook(this);
-    this.loadScene('IntroScene');
+    this.loadScene('Introduction');
   }
 
   async loadScene(scene_name) {
