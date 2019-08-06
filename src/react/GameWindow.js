@@ -12,6 +12,7 @@ const ScrollBox = require('./ScrollBox').default;
 const data = require('data-loader').default;
 
 class GameWindow extends React.Component {
+  ended = false;
   state = {
     button_depressions: {},
     prev_history_seen: 0,
@@ -42,7 +43,7 @@ class GameWindow extends React.Component {
       cur_room: room,
     });
     await this.playScene(room.Enter);
-    while (Object.keys(this.state.cur_choices).length === 0) {
+    while (Object.keys(this.state.cur_choices).length === 0 && !this.ended) {
       await this.playScene(room.Choices);
     }
   }
@@ -57,12 +58,14 @@ class GameWindow extends React.Component {
   }
 
   end() {
+    this.ended = true;
     this.setState(prevState => ({
       history_seen: prevState.prev_history_seen,
     }));
   }
 
   async showChoices(choices, cur_resolve) {
+    console.log(choices);
     await this.setState(prevState => ({
       history_seen: prevState.prev_history_seen,
     }));
