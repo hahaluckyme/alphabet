@@ -23,6 +23,7 @@
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chalk": "2.4.1",
+    "child_process": "^1.0.2",
     "coffeescript": "^2.4.1",
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
@@ -37,6 +38,8 @@
     "file-loader": "2.0.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.0",
+    "fs-promise": "^2.0.3",
+    "glob": "^7.1.4",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.6.0",
@@ -78,9 +81,10 @@
     "test": "node scripts/test.js",
     "setup": "cd data && git init && git remote add origin https://github.com/hahaluckyme/shifted-fates && git fetch && git checkout -t origin/master",
     "prepush": "git status && git diff --quiet HEAD",
+    "pull": "git pull",
     "push": "git push --recurse-submodules=check",
     "deploy": "npm run build && npm version patch --force && cd data && gh-pages -d ../build",
-    "compile": "find data/ -name \"*.coffee\" | xargs cat | coffee -c --stdio > src/data_tmp.js && mv src/data_tmp.js src/data.js",
+    "compile": "node scripts/compile.js",
     "compile-watch": "nodemon --watch data -e coffee --exec \"npm run compile\""
   },
   "eslintConfig": {

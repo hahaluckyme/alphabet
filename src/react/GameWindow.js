@@ -42,7 +42,9 @@ class GameWindow extends React.Component {
       cur_room: room,
     });
     await this.playScene(room.Enter);
-    await this.playScene(room.Choices);
+    while (Object.keys(this.state.cur_choices).length === 0) {
+      await this.playScene(room.Choices);
+    }
   }
 
   async playScene(scene_func) {
@@ -60,11 +62,10 @@ class GameWindow extends React.Component {
     }));
   }
 
-  async showChoices(choices_func, cur_resolve) {
+  async showChoices(choices, cur_resolve) {
     await this.setState(prevState => ({
       history_seen: prevState.prev_history_seen,
     }));
-    const choices = await choices_func();
     await this.setState({
       cur_choices: choices,
       cur_resolve: cur_resolve,
@@ -101,7 +102,9 @@ class GameWindow extends React.Component {
     }));
     const label_map = this.getLabelMap();
     const label = label_map[hotkey];
-    await this.pickChoice(label);
+    if (label) {
+      await this.pickChoice(label);
+    }
   }
 
   async onKeyUpImpl(hotkey) {
@@ -140,7 +143,7 @@ class GameWindow extends React.Component {
   getLabelMap() {
     const {cur_choices} = this.state;
     const choice_labels = Object.keys(cur_choices).filter(
-      e => !['Down', 'West', 'Up', 'West', 'South', 'East'].includes(e),
+      e => !['Down', 'North', 'Up', 'West', 'South', 'East'].includes(e),
     );
     return {
       '1': choice_labels[0],
@@ -150,7 +153,7 @@ class GameWindow extends React.Component {
       '5': choice_labels[4],
 
       'q': cur_choices.Down && 'Down',
-      'w': cur_choices.West && 'West',
+      'w': cur_choices.North && 'North',
       'e': cur_choices.Up && 'Up',
       'r': choice_labels[5],
       't': choice_labels[6],

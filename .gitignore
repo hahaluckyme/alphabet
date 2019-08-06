@@ -1,8 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # data and built files
-src/data.js
 data
+src/_compiled.coffee
+src/_compiled.js
 
 # dependencies
 /node_modules

@@ -1,4 +1,4 @@
-const data = require('../data');
+const data = require('_compiled');
 
 for (const key of Object.keys(data)) {
   switch (typeof data[key] === 'object') {

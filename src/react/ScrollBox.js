@@ -20,10 +20,7 @@ class ScrollBox extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.seen !== this.props.seen) {
-      console.log(this.scrollRef.scrollTop, this.scrollRef.scrollHeight, this.scrollRef.clientHeight);
-      console.log(prevProps.children);
       this.scrollRef.scrollTop = this.state.prevHeight;
-      console.log(this.scrollRef.scrollTop, this.scrollRef.scrollHeight, this.scrollRef.clientHeight);
       this.setState({
         prevHeight: this.scrollRef.scrollHeight,
       });
