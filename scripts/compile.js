@@ -23,7 +23,7 @@ const fs = require('fs');
         break;
       }
       case 'Scene': {
-        temp_file.write(`export ${filename}Scene = =>\n`);
+        temp_file.write(`export ${filename} = =>\n`);
         const a = fs.readFileSync(filepath, 'utf8');
         temp_file.write('  ' + a.trim().replace(/\n/g, '\n  ') + '\n\n');
         break;
