@@ -29,6 +29,9 @@ class GameWindow extends React.Component {
   async componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('keyup', this.onKeyUp.bind(this));
+    window.onblur = () => this.setState({
+      button_depressions: {},
+    });
     ReactGA.pageview(window.location.pathname + window.location.search);
     data.hook(this);
     this.loadScene('Introduction');
