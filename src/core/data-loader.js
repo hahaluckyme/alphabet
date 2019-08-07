@@ -5,7 +5,7 @@ for (const key of Object.keys(data)) {
     case 'object':
       // entity
       for (const property of Object.keys(data[key])) {
-        if (typeof property === 'function') {
+        if (typeof data[key][property] === 'function') {
           // scenes in entities
           data[key][property].parent_id = key;
           data[key][property].id = property;

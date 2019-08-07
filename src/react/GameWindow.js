@@ -46,6 +46,7 @@ class GameWindow extends React.Component {
       cur_room: room,
     });
     await this.playScene(room.Enter);
+    // console.log(this.save());
     while (Object.keys(this.state.cur_choices).length === 0 && !this.ended) {
       await this.playScene(room.Choices);
     }
@@ -65,6 +66,27 @@ class GameWindow extends React.Component {
     this.setState(prevState => ({
       history_seen: prevState.prev_history_seen,
     }));
+  }
+
+  save() {
+    const save_data = {};
+    for (const key of Object.keys(data)) {
+      if (typeof data[key] === 'object') {
+        const scenes = Object.getOwnPropertyNames(data[key]);
+        const state_keys = Object.getOwnPropertyNames(Object.getPrototypeOf(data[key]))
+          .filter(prop => !scenes.includes(prop) && prop !== 'constructor');
+
+        const state = {};
+        for (const state_key of state_keys) {
+          state[state_key] = data[key][state_key];
+        }
+
+        if (Object.keys(state).length > 0) {
+          save_data[key] = state;
+        }
+      }
+    }
+    return save_data;
   }
 
   async showChoices(choices, cur_resolve) {
