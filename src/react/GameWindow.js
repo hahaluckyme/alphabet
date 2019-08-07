@@ -137,7 +137,7 @@ class GameWindow extends React.Component {
   }
 
   onKeyUp(event) {
-    if (!event.ctrlKey && '12345qwertasdfg'.includes(event.key)) {
+    if ('12345qwertasdfg'.includes(event.key)) {
       this.onKeyUpImpl(event.key);
     }
   }

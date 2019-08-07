@@ -3,7 +3,7 @@ const React = require('react');
 
 const Header = require('./Header').default;
 const GameWindow = require('./GameWindow').default;
-const Div100vh = require('react-div-100vh').default;
+
 const {
   isMobile,
 } = require('react-device-detect');
