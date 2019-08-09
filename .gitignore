@@ -16,6 +16,9 @@ src/_compiled.js
 # production
 /build
 
+# svgs
+/svg
+
 # misc
 .DS_Store
 .env.local
