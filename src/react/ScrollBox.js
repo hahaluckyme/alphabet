@@ -14,7 +14,7 @@ class ScrollBox extends React.Component {
 
   computeStateChange() {
     this.setState({
-      is_at_bottom: this.scrollRef.scrollHeight - this.scrollRef.scrollTop - this.scrollRef.clientHeight < 1,
+      is_at_bottom: this.scrollRef.scrollHeight - this.scrollRef.scrollTop - this.scrollRef.clientHeight < 3,
     });
   }
 
