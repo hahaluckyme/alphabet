@@ -134,7 +134,6 @@ body {
 }
 
 .buttons {
-  font-size: 24px;
   color: #d4d4d4;
 }
 
@@ -142,8 +141,8 @@ button {
   border: 1px solid #424242;
   background-color: #3c3c3c;
   color: inherit;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  font-size: 2vw;
+  height: 8vh;
 }
 
 button:active, button.active {
