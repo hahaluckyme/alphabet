@@ -22,6 +22,7 @@ class GameWindow extends React.Component {
     directions: {},
     cur_room: null,
     cur_choices: {},
+    cur_zone: null,
     cur_resolve: null,
     is_at_bottom: true,
   };
@@ -47,8 +48,17 @@ class GameWindow extends React.Component {
     });
     await this.playScene(room.Enter);
     // console.log(this.save());
-    while (Object.keys(this.state.cur_choices).length === 0 && !this.ended) {
-      await this.playScene(room.Choices);
+    if (Object.keys(this.state.cur_choices).length === 0 && !this.ended) {
+      if (room.GridChoices) {
+        await this.playScene(room.GridChoices);
+      }
+      if (room.Choices) {
+        await this.playScene(room.Choices);
+      }
+
+      if (!room.GridChoices && !room.Choices) {
+        return;
+      }
     }
   }
 
