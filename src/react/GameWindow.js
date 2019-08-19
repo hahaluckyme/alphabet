@@ -48,7 +48,7 @@ class GameWindow extends React.Component {
     });
     await this.playScene(room.Enter);
     // console.log(this.save());
-    if (Object.keys(this.state.cur_choices).length === 0 && !this.ended) {
+    while (Object.keys(this.state.cur_choices).length === 0 && !this.ended) {
       if (room.GridChoices) {
         await this.playScene(room.GridChoices);
       }
