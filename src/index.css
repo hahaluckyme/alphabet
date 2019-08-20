@@ -142,8 +142,8 @@ button {
   border: 1px solid #424242;
   background-color: #3c3c3c;
   color: inherit;
-  font-size: 150%;
-  min-height: 96px;
+  overflow: hidden;
+  min-height: 72px;
 }
 
 button:active, button.active {

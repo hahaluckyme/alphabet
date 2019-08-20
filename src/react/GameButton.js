@@ -15,7 +15,7 @@ function GameButton(props) {
           opacity: 0.3,
         }}
       >
-        {props.hotkey}
+        <div>{props.hotkey}</div>
       </button>
     );
   } else if (props.blocked) {
@@ -26,7 +26,7 @@ function GameButton(props) {
           opacity: 0.6,
         }}
       >
-        {props.label}
+        <div>{props.label}</div>
       </button>
     );
   } else {
@@ -35,7 +35,7 @@ function GameButton(props) {
         className={className}
         onClick={() => props.onClick(props.scene)}
       >
-        {props.label}
+        <div>{props.label}</div>
       </button>
     );
   }
