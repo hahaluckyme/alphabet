@@ -60,7 +60,7 @@
     "react": "^16.7.0",
     "react-app-polyfill": "^0.2.0",
     "react-bootstrap": "^0.32.4",
-    "react-dev-utils": "^7.0.1",
+    "react-dev-utils": "^11.0.4",
     "react-device-detect": "^1.6.2",
     "react-div-100vh": "^0.3.4",
     "react-dom": "^16.7.0",
